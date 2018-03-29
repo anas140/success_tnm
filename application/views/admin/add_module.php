@@ -73,7 +73,7 @@
                 <div class="pcoded-wrapper">
 				  <!--start left sidebar-->
                  <?php require_once('includes/left-sidebar.php');?>
-					<!---left side bar---->
+					<!---left side bar-->
                     <div class="pcoded-content">
                         <!-- Page-header start -->
                         <div class="page-header">
