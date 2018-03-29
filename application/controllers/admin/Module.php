@@ -12,7 +12,37 @@
         }
         public function create() {
             // public function add_module() {
-                die(print_r($_POST));
+          $course_id = $this->input->post('course_id');
+            $module  = $_POST['course_module'];
+                //print_r($module);exit;
+          foreach ($module as $key => $array1) 
+          {
+            //print_r($array1);exit;
+            foreach ($array1 as $key2 => $array2) 
+            {
+                
+                $array = array('course_id'=>$course_id  ,'module_language'=>$key,'module_name'=>$array2['module_title']);
+                $module_id = $this->tbl_function->insert('tbl_modules',$array);                
+                foreach ($array1['module_url'] as $key3 => $value) 
+                {
+
+                  $ins_array = array('course_id'=>$course_id  ,'module_id'=>$module_id,'contenet '=>$value,'chapter_language_id'=>$key);
+                  $this->tbl_function->insert('tbl_chapters',$ins_array);
+                }
+
+
+                
+            }
+          }
+
+                  // die(print_r($_FILES));
+              /*  $language_count = count($_POST['course_module']);
+                // echo $language_count;
+                for($i = 0; i < $language_count; $i++) {
+                  $modulecount = 0;
+                  // $module_count = $_POST['']
+                }
+
                 // echo count($this->input->post('course_module'));
                 // $count = count($this->input->post('course_module'));exit;
                 $module_language = $this->input->post('module_language');
@@ -52,7 +82,7 @@
                     //    die(print_r($inser_array));
                    $this->course_model->insert_batch('tbl_modules',$inser_array);
                    redirect('admin/home/course_module');
-               } 
+               } */
             // }
         }
         public function get_languages() {
@@ -67,42 +97,41 @@
             $html = "";
             $i = 0;
              for($i=0;$i<$languages_count;$i++) {
-              $html .= 
-                        '<div class="module-form">
+              $html .=  '<div class="module-form">
                             <p id="language">
                                '.$languages[$i].'
                             </p>
-                            <div class="j-span3 j-unit">
+                            <div class="j-span10 j-unit">
                             <div class="j-input">
-                                <input type="hidden" name="module_language" value="' .$languages[$i].'">
-                                <input type="text" class="module_name_value" name="course_module['.$i.'][module_title]" placeholder="Module 1">
-                                <span class="j-tooltip j-tooltip-right-top">Module1</span>
+                            <input type="hidden" name="course_id" value='.$id.'>
+                                <input type="text" class="module_name_value" name="course_module['.$languages[$i].'][0][module_title]" placeholder="Module Title">
+                                <span class="j-tooltip j-tooltip-right-top">Module1
+                                </span>
                             </div>
                         </div>
-                        <div class="j-span3 j-unit">
+                        <div class="j-row">
+                            <div class="j-span4 j-unit">
                             <div class="j-input j-append-small-btn">
                                 <div class="j-file-button">
                                     Browse
-                                    <input type="file" name="course_module['.$i.'][module_pdf]">
-                                    <input type="hidden" name="chapter_language" value="'.$languages[$i].'">
+                                    <input type="file" name="course_module['.$languages[$i].'][module_file][]">
                                 </div>
                                 <input type="text" id=" name="module_pdf" readonly="" placeholder="Add Course Pdf">
                             </div>
                         </div>
-                        <div class="j-row">
-                            <div class="j-span3 j-unit">
+                            <div class="j-span4 j-unit">
                                 <div class="j-input">
-                                    <input type="text" id="module_video_url[]" name="course_module['.$i.'][module_url]" placeholder="Youtube Url" value="">
+                                    <input type="text" id="module_video_url[]" name="course_module['.$languages[$i].'][module_url][]" placeholder="Youtube Url" value="">
                                     <span class="j-tooltip j-tooltip-right-top">Youtube Video Url</span>
                                 </div>
                             </div>
-                            <div class="col-md-2">
-                                <div class="form-group">
-                                    <a href="javascript:void(0);" class="add_button" title="Add field" style="margin-top: 26px;float: left;"></a>
-                                </div>
+
+                            <div class="j-span3 j-unit">
+                                <button type="button" class="btn-link add" style="margin-top: 26px;float: left;" data-language='.$languages[$i].' data-olaka=0>Add</button>
                             </div>
+
                             <div class="">
-                                <button type="button" class="btn-link addMore style="margin-top: 26px;float: left;">Add More</button>
+                                <button type="button" class="btn-link addMore style="margin-top: 26px;float: left;" data-language='.$languages[$i].' data-olaka=0>Add More</button>
                             </div>
                         </div>
     
@@ -115,13 +144,9 @@
     
                         </div>';
             } 
-            $addMoreHtml = '
-                <div class="pull-right">
-                    <button type="button" class="btn btn-link" onclick="addMore('.$id.')">Add More</button>
-                </div>';
     
             $result['languages'] = explode(",", $result['course_language']);
-            echo $html.$addMoreHtml;
+            echo $html;
         }
         
     }

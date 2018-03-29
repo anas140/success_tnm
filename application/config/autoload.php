@@ -132,4 +132,4 @@ $autoload['language'] = array();
 |
 |	$autoload['model'] = array('first_model' => 'first');
 */
-$autoload['model'] = array('site_model' =>'tbl_course','admin', 'event_model', 'course_model');
+$autoload['model'] = array('site_model' =>'tbl_course','admin', 'event_model', 'course_model','tbl_function');
