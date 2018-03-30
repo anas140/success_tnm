@@ -11,29 +11,35 @@
             $this->load->view('admin/add_module',$data);
         }
         public function create() {
-            // public function add_module() {
           $course_id = $this->input->post('course_id');
             $module  = $_POST['course_module'];
-                //print_r($module);exit;
-          foreach ($module as $key => $array1) 
-          {
-            //print_r($array1);exit;
-            foreach ($array1 as $key2 => $array2) 
-            {
-                
-                $array = array('course_id'=>$course_id  ,'module_language'=>$key,'module_name'=>$array2['module_title']);
-                $module_id = $this->tbl_function->insert('tbl_modules',$array);                
-                foreach ($array1['module_url'] as $key3 => $value) 
-                {
 
-                  $ins_array = array('course_id'=>$course_id  ,'module_id'=>$module_id,'contenet '=>$value,'chapter_language_id'=>$key);
+            // $key = language, $array1 = title module
+            foreach ($module as $key => $array1) 
+            {
+              foreach ($array1 as $array2) // array 2 = tmp_array, 
+              {
+
+                $array = array(
+                  'course_id'       => $course_id, 
+                  'module_language' => $key,
+                  'module_name'     => $array2['module_title']
+                );
+
+                $module_id = $this->tbl_function->insert('tbl_modules',$array);                
+                foreach ($array2['module_url'] as $value) 
+                {
+                 
+                  $ins_array = array(
+                    'course_id' => $course_id,
+                    'module_id' => $module_id,
+                    'contenet'  => $value,
+                    'chapter_language_id'=>$key
+                  );
                   $this->tbl_function->insert('tbl_chapters',$ins_array);
                 }
-
-
-                
+              }
             }
-          }
 
                   // die(print_r($_FILES));
               /*  $language_count = count($_POST['course_module']);
@@ -114,14 +120,14 @@
                             <div class="j-input j-append-small-btn">
                                 <div class="j-file-button">
                                     Browse
-                                    <input type="file" name="course_module['.$languages[$i].'][module_file][]">
+                                    <input type="file" name="course_module['.$languages[$i].'][0][module_file][]">
                                 </div>
                                 <input type="text" id=" name="module_pdf" readonly="" placeholder="Add Course Pdf">
                             </div>
                         </div>
                             <div class="j-span4 j-unit">
                                 <div class="j-input">
-                                    <input type="text" id="module_video_url[]" name="course_module['.$languages[$i].'][module_url][]" placeholder="Youtube Url" value="">
+                                    <input type="text" id="module_video_url[]" name="course_module['.$languages[$i].'][0][module_url][]" placeholder="Youtube Url" value="">
                                     <span class="j-tooltip j-tooltip-right-top">Youtube Video Url</span>
                                 </div>
                             </div>

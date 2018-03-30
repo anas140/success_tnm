@@ -399,7 +399,7 @@ html += `
 </div>
 
 <div class="j-span2 j-unit">
-    <button type="button" class="btn-link delete style="margin-top: 26px;float: left;">delete </button>
+    <button type="button" class="btn-link delete style="margin-top: 26px;float: left;" data-olaka="0">delete </button>
     </div>
 
 
@@ -408,7 +408,7 @@ html += `
 <div class="j-input j-append-small-btn">
 <div class="j-file-button">
     Browse
-    <input type="file" name="course_module[${language}][${temp}][module_file]">
+    <input type="file" name="course_module[${language}][${temp}][module_file][]">
 </div>
 <input type="text" id=" name="" readonly="" placeholder="Add Course Pdf">
 </div>
@@ -416,13 +416,13 @@ html += `
 <div class="j-row">
 <div class="j-span4 j-unit">
 <div class="j-input">
-    <input type="text" name="course_module[${language}][${temp}][module_url]" placeholder="Youtube Url" value="">
+    <input type="text" name="course_module[${language}][${temp}][module_url][]" placeholder="Youtube Url" value="">
     <span class="j-tooltip j-tooltip-right-top">Youtube Video Url</span>
 </div>
 </div>
 
 <div class="j-span3 j-unit">
-        <button type="button" class="btn-link add" style="margin-top: 26px;float: left;">Add</button>
+        <button type="button" class="btn-link add" style="margin-top: 26px;float: left;" data-language=${language} data-olaka=${temp}>Add</button>
     </div>
 
 
@@ -452,8 +452,8 @@ $(div).append(html);
         let html = "";
         language = $(this).data('language');
         temp     = $(this).data('olaka');
-        temp++;
-        $(this).data('olaka',temp);
+        //temp++;
+        //$(this).data('olaka',temp);
         //alert(language);
         html += `
         
@@ -470,7 +470,7 @@ $(div).append(html);
                 <div class="j-row">
                     <div class="j-span4 j-unit">
                         <div class="j-input">
-                            <input type="text" name="course_module[${language}][module_url][]" placeholder="Youtube Url">
+                            <input type="text" name="course_module[${language}][${temp}][module_url][]" placeholder="Youtube Url">
                             <span class="j-tooltip j-tooltip-right-top">
                                 Youtube Video Url
                             </span>
