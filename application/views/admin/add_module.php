@@ -540,9 +540,19 @@ $(this).closest('.ansu').remove();
 // })
 // $(document).on('change', '#course_module_select', function() {
 $("#course_module_select").on('change', function() {
-    $("#module_table").DataTable(
-        
-    );
+    id = this.value;
+    $.ajax({
+         url: '/success/admin/module/get_modules_by_course',
+         type: 'POST',
+         data: {id: this.value},
+         success: function(response) {
+            $("#module_table").html(response);
+
+        },
+        error: function(xhr,status,error) {
+                console.log(error);
+        }
+    })   
 })
 </script>
 

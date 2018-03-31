@@ -149,5 +149,12 @@
     
             echo $html;
         }
+
+        public function get_modules_by_course() {
+          $id = $this->input->post('id');
+          $result = $this->module_model->get_modules_by_course($id);
+          // echo $result->result();
+          echo $result;
+        }
         
     }

@@ -451,6 +451,8 @@ class Course_model extends CI_Model {
         $query = $this->db->get();
         return $query->result();
     }
+
+    // start anas
     public function language_count_and_get($id) {
         $query = $this->db->get_where('tbl_course', 
                     array(
@@ -492,6 +494,6 @@ class Course_model extends CI_Model {
     return $this->db->insert_id();
   }
 
-
+  // \close anas
 
 }
