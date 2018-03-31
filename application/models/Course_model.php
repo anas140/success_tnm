@@ -451,10 +451,39 @@ class Course_model extends CI_Model {
         $query = $this->db->get();
         return $query->result();
     }
-    public function language_count_and_get() {
-        $result = $this->db->get_where('tbl_course', array('course_id' => $this->input->post('id')));
-        return $result->row_array();
+    public function language_count_and_get($id) {
+        $query = $this->db->get_where('tbl_course', 
+                    array(
+                        'course_id' => $this->input->post('id')
+                    )
+                );
+                // $result = $query
+                
+                $this->db->select('tbl_course.course_language,course_id,tbl_languages.language_id,language_name')->from('tbl_course');
+                $this->db->join('tbl_languages','FIND_IN_SET(tbl_languages.language_id, tbl_course.course_language)', 'left');
+                $this->db->where('tbl_course.course_id', $id);
+
+
+               // $this->db->group_by('tbl_languages.language_id');
+            
+                  $query = $this->db->get();
+
+                  // return $query->result_array();
+                  // $languages_count = sizeof($query->result_array());
+                  // print_r($languages_count); exit;
+                  // $data = array(
+                  //   $query->result_array(),
+                  //   $languages_count
+                  // );
+                  return $query->result_array();
+                    // return $query->row_array();
+                    // print_r($query->row_array());exit;
+                 // echo $this->db->last_query();exit;
+
+
+
     }
+    //$this->db->join('tbl_subtitle_exclude as Tse', 'FIND_IN_SET(Tse.subtitle_exclude_id, Tc.cart_excludes)', 'left')
 
  function insert_batch($tablename,$data)
   {
