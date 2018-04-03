@@ -3,6 +3,7 @@
     <head>
         <title>Success Valley</title>
         <?php require_once('includes/common-css.php');?>
+        <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
     </head>
     <style>
         .add {
@@ -12,6 +13,17 @@
         .del {
             margin-top: 4px;
             border-radius: 50%;
+        }
+        .fa {
+            border: 1px solid #ddd;
+            padding: 3px;
+            cursor: pointer;
+        }
+        .fa-pencil:hover {
+            color: orange
+        }
+        .fa-trash:hover {
+            color: red;
         }
     </style>
     <body>
@@ -246,12 +258,12 @@
             <th>Course</th>
 			<th>Language</th>                      
 			<th>Date</th>
-			<th>Status</th>
+			<!-- <th>Status</th> -->
 			<th>Action</th>
         </tr>
     </thead>
-    <tbody>
-	   <?php /* if (!empty($all_faq)) {
+    <tbody id="module_table_body">
+	  <!-- <?php /* if (!empty($all_faq)) {
         $i=0;
         //foreach($all_faq as $post){
            // $i++;
@@ -293,7 +305,7 @@
 		</tr>
     }
 } */
-?> 
+?> */ -->
 										   
     </tbody>
 </table>
@@ -345,6 +357,43 @@ This Process cannot be Rolled Back
 </div>
 
 <!-- ////////////////////////////////////////////////////////////////////////////-->
+
+
+
+
+<!-- Models -->
+
+<!-- Edit Module Model -->
+<div class="modal fade" tabindex="-1" role="dialog" id="module_edit_modal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Edit Module</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      </div>
+      <div class="modal-body">
+        
+        <form accept="" method="post"> 
+            <div class="form-group">
+                <label for="Title">Module Title</label>
+                <input type="hidden" name="module_id" id="modal_module_id" value="">
+                <input type="text" class="form-control" name="title" id="modal_module_title">
+            </div>
+            <!-- <input type="submit" class="btn btn-primary" value="Update"> -->
+        </form>
+
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" id="edit_module_modal_btn" class="btn btn-primary">Save changes</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<!-- ./ Edit Module End  -->
+
+<!-- ./Models -->
 
 
 <?php require_once('includes/common-js.php');?>
@@ -540,20 +589,111 @@ $(this).closest('.ansu').remove();
 // })
 // $(document).on('change', '#course_module_select', function() {
 $("#course_module_select").on('change', function() {
-    id = this.value;
+    // id = this.value;
+    getModulesByCourse(this.value);
+    
+});
+function getModulesByCourse(id) {
     $.ajax({
          url: '/success/admin/module/get_modules_by_course',
          type: 'POST',
-         data: {id: this.value},
+         data: {id: id},
          success: function(response) {
-            $("#module_table").html(response);
+            // console.log(response);
+            html = "ggg";
+            response = JSON.parse(response);
+            var i =0;
+            response.forEach(function(item) {
+                i +=  1;
+                html += `
+                    <tr>
+                        <td>${item.module_id}</td>
+                        <td>${item.module_name}</td>
+                        <td>${item.course_name}</td>
+                        <td>${item.language_name}</td>
+                        <td>${item.updated_at}</td>
+                        <td>
+                            <i class="fa fa-pencil" id="edit_module" style="font-size:25px;" data-module="${item.module_id}" data-course="${item.course_id}" data-moduletitle="${item.module_name}"></i>&nbsp;
+                            <i class="fa fa-trash" id="delete_module" style="font-size:25px;" data-module="${item.module_id}" data-course="${item.course_id}"></i>
+                        </td>
+                    </tr>
+                `;
+            });
+            // console.log(html);
+            // $("#module_table").html(response);
+            $('#module_table').DataTable();
+            $("#module_table_body").html(html);
 
         },
         error: function(xhr,status,error) {
                 console.log(error);
         }
     })   
+}
+
+// Edit Module
+$('body').on("click", "#edit_module", function() {
+    $("#modal_module_title").val($(this).data('moduletitle'));
+    $("#modal_module_id").val($(this).data('module'))
+    $("#module_edit_modal").modal("show");
+
 })
+
+$("#edit_module_modal_btn").on('click', function() {
+    alert($(this).data('module'));
+   // alert($("#modal_module_title").val());
+   $.ajax({
+    url: '/success/admin/module/update_module',
+    type: 'POST',
+    data: {id: $(this).data('module'), title: $("#modal_module_title").val()},
+    success: function(response) {
+        console.log(response);
+    },
+    error: function(response) {
+        console.log(response);
+    }
+   });
+})
+// \. Edit Module
+
+
+
+// Delete Module
+$('body').on("click", "#delete_module", function() {
+    // alert(this.data(module));
+    // alert($(this).data('module'));
+    var course_id = $(this).data('course');
+    alert(course_id);
+    if(confirm('Are You Sure want to delete this Module')) {
+        $.ajax({
+         url: '/success/admin/module/delete_module',
+         type: 'POST',
+         data: {id: $(this).data('module')},
+         success: function(response) {
+           if(response) {
+            console.log('data deleted');
+            // Display an error toast, with a title
+            toastr.error('Module Deleted');
+
+            getModulesByCourse(course_id);
+           } else {
+            
+           }
+         },
+         error: function(xhr,status,error) {
+                console.log(error);
+         }
+        })
+    } else {
+         toastr.success('Deletion Cancelled');
+    }
+    
+})
+
+
+// $("body").on('click', "#edit_module", function() {
+
+// });
 </script>
 
 </html>

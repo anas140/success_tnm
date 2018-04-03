@@ -1,5 +1,14 @@
+
+
+
 <!-- Required Jquery -->
 <script type="text/javascript" src="<?php echo base_url();?>assets/files/bower_components/jquery/js/jquery.min.js"></script>
+
+<!-- Anas -->
+	<script type="text/javascript" src="<?php echo base_url();?>assets/js/admin/toaster.js"></script>
+<!-- /. Anas -->
+
+
 <script type="text/javascript" src="<?php echo base_url();?>assets/files/bower_components/jquery-ui/js/jquery-ui.min.js"></script>
 <script type="text/javascript" src="<?php echo base_url();?>assets/files/bower_components/popper.js/js/popper.min.js"></script>
 <script type="text/javascript" src="<?php echo base_url();?>assets/files/bower_components/bootstrap/js/bootstrap.min.js"></script>

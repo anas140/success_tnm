@@ -154,7 +154,22 @@
           $id = $this->input->post('id');
           $result = $this->module_model->get_modules_by_course($id);
           // echo $result->result();
+          // print_r($result);
+          echo json_encode($result);
+        }
+
+        // delete module
+        public function delete_module() {
+          $module_id = $this->input->post('id');
+          $result = $this->module_model->delete_module($module_id);
           echo $result;
+        }
+
+        // update Module
+        public function update_module() {
+          $module_id = $this->input->post('id');
+          $module_title = $this->input->post('title');
+          echo $module_id."<br>".$module_title;
         }
         
     }
