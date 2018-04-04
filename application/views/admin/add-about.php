@@ -137,49 +137,31 @@
                            }
                      else{
                            ?>
-						      <form action="<?php echo base_url('admin/home/add_about'); ?>" method="post" class="j-pro" id="j-pro" enctype="multipart/form-data" novalidate>
-															
-						        <?php
-                            }
-                               ?>
-                                                                <!-- end /.header-->
-                                                                <div class="j-content">
-                                                                    <!-- start name -->
-                                                                    <div class="j-row">
-                                                                        
-                                                            
-                                                              
-                                                                  
-															
-																
-														
-                                                         
-                                                                    <div class="divider gap-bottom-25"></div>
-                                                           
-                                                                    <!-- start files -->
-                                                                    <div class="j-row">
-                                                                        
-                                                                           <div class="j-span6 j-unit">
-                                                                            <div class="j-input">
-																				 <h4 class="sub-title">About Success Valley</h4>
-                                                                                <textarea type="text" id="editor1" name="about_success_valley" placeholder="About Success Valley"><?php echo @$single_about[0]->about_success_valley ?></textarea>
-																				   <span class="j-tooltip j-tooltip-right-top">About Success Valley</span>
-																				   
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    <!-- end files -->
-                                                                    <!-- start response from server -->
-                                                                    <div class="j-response"></div>
-                                                                    <!-- end response from server -->
-                                                                </div>
-                                                                <!-- end /.content -->
-                                                                <div class="j-footer">
-                                                                    <button type="submit" class="btn btn-primary">Save</button>
-                                                                    <button type="reset" class="btn btn-default m-r-20">cancel</button>
-                                                                </div>
-                                                                <!-- end /.footer -->
-                                                            </form>
+<form action="<?php echo base_url('admin/home/add_about'); ?>" method="post" class="j-pro" id="about_form" enctype="multipart/form-data" novalidate>
+<?php } ?>
+<div class="j-content">
+    <div class="j-row">
+        <div class="divider gap-bottom-25"></div>
+            <div class="j-row">
+                <div class="j-span6 j-unit">
+                    <div class="j-input">
+					   <h4 class="sub-title">About Success Valley</h4>
+                        <textarea type="text" id="editor1" name="about_success_valley" placeholder="About Success Valley" required><?php echo @$single_about[0]->about_success_valley ?>
+        
+                        </textarea>
+                    </div>
+                </div>
+                <div class="j-response"></div>
+            </div>
+            <div class="j-footer">
+                <button type="submit" class="btn btn-primary">Save</button>
+                <button type="reset" class="btn btn-default m-r-20">
+                    cancel
+                </button>
+            </div>
+        </div>
+    </div>
+</form>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -355,6 +337,16 @@ $('#about_id').val($(this).data('id'));
     CKEDITOR.replace('editor1');
   });
 </script>
+
+<!-- Anas -->
+    <script>
+        $("#about_form").submit(e => {
+          e.preventDefault();
+          
+          $("#")
+        });
+    </script>
+<!-- /. Anas -->
 
 </body>
 

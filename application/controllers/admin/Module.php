@@ -169,7 +169,23 @@
         public function update_module() {
           $module_id = $this->input->post('id');
           $module_title = $this->input->post('title');
-          echo $module_id."<br>".$module_title;
+          $result = $this->module_model->update_module($module_id, $module_title);
+          echo $result;
+        }
+
+        // get chapters by module
+        public function get_chapters() {
+          $module_id = $this->input->post('id');
+          $result = $this->module_model->get_chapters($module_id);
+          // echo $result;
+          echo json_encode($result);
+        }
+
+        // delete chapter
+        public function delete_chapter() {
+          $chapter_id = $this->input->post('id');
+          $result = $this->module_model->delete_chapter($chapter_id);
+          echo $result;
         }
         
     }

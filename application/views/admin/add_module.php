@@ -18,6 +18,7 @@
             border: 1px solid #ddd;
             padding: 3px;
             cursor: pointer;
+            font-size: 25px;
         }
         .fa-pencil:hover {
             color: orange
@@ -25,6 +26,10 @@
         .fa-trash:hover {
             color: red;
         }
+        .fa-eye:hover {
+            color: #448aff;
+        }
+
     </style>
     <body>
 <!-- Pre-loader start -->
@@ -377,12 +382,53 @@ This Process cannot be Rolled Back
             <div class="form-group">
                 <label for="Title">Module Title</label>
                 <input type="hidden" name="module_id" id="modal_module_id" value="">
+                <input type="hidden" name="course_id" id="modal_course_id" value="">
+
                 <input type="text" class="form-control" name="title" id="modal_module_title">
             </div>
             <!-- <input type="submit" class="btn btn-primary" value="Update"> -->
         </form>
 
 
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" id="edit_module_modal_btn" class="btn btn-primary">Save changes</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<!-- ./ Edit Module End  -->
+
+<!-- Show Chapters Model -->
+<div class="modal fade" tabindex="-1" role="dialog" id="show_chapters_modal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Edit Module</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      </div>
+      <div class="modal-body">
+        <div class="row" id="modal_chapters_body">
+            <div class="col-md-10">
+                <table id="table_chapters" class="table table-striped table-bordered nowrap">
+                    <thead>
+                        <tr>
+                            <td>#</td>
+                            <td>Chapter</td>
+                            <td>Type</td>
+                            <td>Action</td>
+                        </tr>
+                    </thead>
+                    <tbody id="tbody_chapters">
+                        <!-- This will be load in xhr -->
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-md-4">
+                                
+            </div>
+        </div>        
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -458,11 +504,11 @@ $('#faq_id').val($(this).data('id'));
 </script>
 <script src="https://cdn.ckeditor.com/4.5.7/standard/ckeditor.js"></script>
 <script>
-$(function () {
-//Initialize Select2 Elements
-$(".select2").select2();
-CKEDITOR.replace('editor1');
-});
+// $(function () {
+// //Initialize Select2 Elements
+// $(".select2").select2();
+// CKEDITOR.replace('editor1');
+// });
 
 $("body").on('click','.addMore', function() {
 div = $(this).parents('.module-form');
@@ -525,12 +571,6 @@ $(div).append(html);
 
 
 <script>
-    $(function () {
-//Initialize Select2 Elements
-    $(".select2").select2();
-        CKEDITOR.replace('editor1');
-    });
-
     $("body").on('click','.add', function() {
         div = $(this).closest('.j-row');
         let html = "";
@@ -613,8 +653,9 @@ function getModulesByCourse(id) {
                         <td>${item.language_name}</td>
                         <td>${item.updated_at}</td>
                         <td>
-                            <i class="fa fa-pencil" id="edit_module" style="font-size:25px;" data-module="${item.module_id}" data-course="${item.course_id}" data-moduletitle="${item.module_name}"></i>&nbsp;
-                            <i class="fa fa-trash" id="delete_module" style="font-size:25px;" data-module="${item.module_id}" data-course="${item.course_id}"></i>
+                            <i class="fa fa-pencil" id="edit_module" data-module="${item.module_id}" data-course="${item.course_id}" data-moduletitle="${item.module_name}"></i>&nbsp;
+                            <i class="fa fa-trash" id="delete_module" data-module="${item.module_id}" data-course="${item.course_id}"></i>
+                            <i class="fa fa-eye" id="show_chapters" data-module="${item.module_id}" data-course="${item.course_id}" title="show chapters"></i>
                         </td>
                     </tr>
                 `;
@@ -624,6 +665,7 @@ function getModulesByCourse(id) {
             $('#module_table').DataTable();
             $("#module_table_body").html(html);
 
+
         },
         error: function(xhr,status,error) {
                 console.log(error);
@@ -631,23 +673,114 @@ function getModulesByCourse(id) {
     })   
 }
 
+// Show Chapters
+$('body').on("click", "#show_chapters", function() {
+    var module_id = $(this).data('module');
+    showChapters(module_id);
+    
+})
+function showChapters(module_id) {
+    $.ajax({
+        url: '/success/admin/module/get_chapters',
+        type: 'POST',
+        data: {id: module_id},
+        success: function(response) {
+            data = JSON.parse(response);
+            if(data.length >= 1) {
+                html = "";
+                var i = 0;
+                var type;
+                data.forEach((val) => {
+                    if(val.content_type == 0) {
+                        type = "pdf";
+                    } else {
+                        type = "url";
+                    }
+                    i += 1;
+                    html += `
+                        <tr>
+                            <input type="hidden" value="${val.module_id}" id="chapter_module_id"/>
+                            <td>${i}</td>
+                            <td>${val.content}</td>
+                            <td>${type}</td>
+                            <td>
+                                <i class="fa fa-pencil edit_chapter" data-chapter="${val.chapter_id}">
+                                </i>
+                                <i class="fa fa-trash delete_chapter" data-chapter="${val.chapter_id}">
+                                </i>
+                            </td>
+                        </tr>
+                    `
+                });
+
+                $('#table_chapters').DataTable();
+                $("#tbody_chapters").html(html);
+                $("#show_chapters_modal").modal('show');
+
+            } else {
+                toastr.error('No Chapters Found this Module');
+            }
+        }, 
+        error: function(xhr,status,error) {
+            console.log(error);
+        }
+    });
+}
+
+// Delete Chapter
+$('body').on('click', ".delete_chapter", function() {
+    $("#chapter_module_id").val();
+   if(confirm("Are You Sure want to delete this chapter")) {
+        $.ajax({
+            url: '/success/admin/module/delete_chapter',
+            type: "POST",
+            data: {id: $(this).data('chapter')},
+            success: function(response) {
+                if(response) {
+                    toastr.success('chapter removed');
+                    console.log(response);
+                    showChapters($("#chapter_module_id").val());
+                } else {
+                    toastr.error('Some error occured');
+                }
+            },
+            error: function(response) {
+                console.log(response);
+            }
+        })
+   } else {
+    toastr.success('Cancelled');
+   }
+})
+
+
+
 // Edit Module
 $('body').on("click", "#edit_module", function() {
     $("#modal_module_title").val($(this).data('moduletitle'));
     $("#modal_module_id").val($(this).data('module'))
+    $("#modal_course_id").val($(this).data('course'))
     $("#module_edit_modal").modal("show");
 
 })
 
 $("#edit_module_modal_btn").on('click', function() {
-    alert($(this).data('module'));
-   // alert($("#modal_module_title").val());
+    var module_id = $("#modal_module_id").val();
+    var course_id = $("#modal_course_id").val();
+
    $.ajax({
     url: '/success/admin/module/update_module',
     type: 'POST',
-    data: {id: $(this).data('module'), title: $("#modal_module_title").val()},
+    data: {id: module_id, title: $("#modal_module_title").val()},
     success: function(response) {
         console.log(response);
+        if(response) {
+            toastr.success('Module Updated');
+            $("#module_edit_modal").modal("hide");
+            getModulesByCourse(course_id);
+        } else {
+            toastr.error('Error Occured, Please try again');
+        }
     },
     error: function(response) {
         console.log(response);
@@ -690,10 +823,6 @@ $('body').on("click", "#delete_module", function() {
     
 })
 
-
-// $("body").on('click', "#edit_module", function() {
-
-// });
 </script>
 
 </html>
