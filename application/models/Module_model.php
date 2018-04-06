@@ -6,7 +6,8 @@
         }
         public function get_modules_by_course($id) {
         	$this->db->select('
-        		 tbl_modules.module_id, 
+        		 tbl_modules.module_id,
+                 tbl_modules.module_language, 
         		 tbl_course.course_name,
         		 tbl_course.course_id, 
         		 tbl_languages.language_name, 

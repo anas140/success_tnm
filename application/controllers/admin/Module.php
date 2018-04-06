@@ -1,4 +1,5 @@
 <?php 
+    defined('BASEPATH') OR exit('No direct script access allowed');
     class Module extends CI_Controller {
         public function show() {
             $this->admin->start_session();
@@ -23,13 +24,15 @@
             {
               foreach ($array1 as $key1 => $array2) // array 2 = tmp_array, 
               {
-
-                $array = array(
-                  'course_id'       => $course_id, 
-                  'module_language' => $key,
-                  'module_name'     => $array2['module_title']
-                );
-                $module_id = $this->tbl_function->insert('tbl_modules',$array);
+                if(!empty($array2['module_title'])) {
+                  $array = array(
+                    'course_id'       => $course_id, 
+                    'module_language' => $key,
+                    'module_name'     => $array2['module_title']
+                  );
+                  $module_id = $this->tbl_function->insert('tbl_modules',$array);  
+                }
+                
                 foreach ($module_file[$key][$key1] as $files) 
                 {
                   $i=0;
@@ -57,7 +60,7 @@
                        $ins_array = array(
                       'course_id' => $course_id,
                       'module_id' => $module_id,
-                      'contenet'  =>  $fileData['file_name'],
+                      'content'  =>  $fileData['file_name'],
                       'chapter_language_id'=>$key,
                       'content_type'=>0
                      );
@@ -71,16 +74,19 @@
                 
                 foreach ($array2['module_url'] as $value) 
                 {
+                  if(!empty($value)) {
 
-                 
                   $ins_array = array(
                     'course_id' => $course_id,
                     'module_id' => $module_id,
-                    'contenet'  => $value,
+                    'content'  => $value,
                     'chapter_language_id'=>$key,
                     'content_type'=>1
                   );
                   $this->tbl_function->insert('tbl_chapters',$ins_array);
+
+                  }
+                 
                 }
               }
             }
@@ -186,6 +192,35 @@
           $chapter_id = $this->input->post('id');
           $result = $this->module_model->delete_chapter($chapter_id);
           echo $result;
+        } 
+        // Create Chapters In Modal
+        public function create_chapter() {
+          // print_r($_POST);exit;
+          // print_r($_FILES);exit;
+          $count = count($this->input->post('module_url'));
+          // echo $count;exit;
+          $module_url = $this->input->post('module_url');
+          $module_id = $this->input->post('module_id');
+          $language_id = $this->input->post('language_id');
+          $course_id = $this->input->post('course_id');
+
+          $data = array();
+
+          for($i = 0; $i < $count; $i++) {
+            $data[$i] = array(
+                'module_id' => $module_id,
+                'course_id' => $course_id,
+                'chapter_language_id' => $language_id,
+                'content' => $module_url[$i],
+                'content_type' => 1, //pdf
+            );
+          }
+          // $this->
+          print_r($data);exit;
+          // $data = array(
+          //     'module_id' => 
+          // );
+
         }
         
     }

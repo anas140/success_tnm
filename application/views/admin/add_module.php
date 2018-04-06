@@ -4,8 +4,7 @@
         <title>Success Valley</title>
         <?php require_once('includes/common-css.php');?>
         <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
-    </head>
-    <style>
+        <style>
         .add {
             margin-top: 4px;
             border-radius: 50%;
@@ -18,7 +17,7 @@
             border: 1px solid #ddd;
             padding: 3px;
             cursor: pointer;
-            font-size: 25px;
+            font-size: 20px;
         }
         .fa-pencil:hover {
             color: orange
@@ -28,6 +27,13 @@
         }
         .fa-eye:hover {
             color: #448aff;
+        }
+        .fa-plus:hover {
+            color: green;
+        }
+        .btn-modal {
+            /*padding: 0;*/
+            padding: .375rem .75rem;
         }
 
     </style>
@@ -159,7 +165,7 @@
             </div>
         </div>
     </div>
-	<div class="j-row wrappers" id="add_module_form">
+	<div class="j-row wrappers" id="add_module_form"></div>
 	    <!--<div class="j-span3 j-unit">
             <div class="j-input">
                 <input type="text" id="course_module" name="course_module" placeholder="Module 1" value="<?php echo @$profile[0]->profile_title ?>">
@@ -367,6 +373,56 @@ This Process cannot be Rolled Back
 
 
 <!-- Models -->
+<!-- Add Chapter Model -->
+<div class="modal fade" tabindex="-1" role="dialog" id="add_chapter_modal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Add Chapter </h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      </div>
+      <div class="modal-body">
+        
+        <form action="<?= base_url('admin/module/create_chapter') ?>" enctype="multipart/form-data" method="post"> 
+            <!-- <div class="form-group"> -->
+                <label for="Title" id="module_title_in_modal"></label>
+                <input type="hidden" name="module_id" id="chapter_modal_module_id" value="">
+                <input type="hidden" name="course_id" id="chapter_modal_course_id" value="">
+                <input type="hidden" name="language_id" id="chapter_modal_language_id" value="">
+            <!-- </div> -->
+            <div id="chapters_modal">
+                <div class="row">
+                    <div class="col-md-5">
+                        <div class="form-group">
+                            <input type="file" name="modulefile[]" id="">
+                        </div>
+                    </div>
+                    <div class="col-md-5">
+                        <input type="text" class="form-control" name="module_url[]" placeholder="Video Url">
+                    </div>
+                    <div class="col-md-2">
+                        <button type="button" class="btn btn-primary btn-modal"  style="float: left;" data-language="" data-olaka="" id="add_more_chapter_btn">
+                            +
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <!-- <input type="submit" class="btn btn-primary" value="Update"> -->
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="submit" id="add_chapter_modal_save_btn" id="" class="btn btn-primary">Save</button>
+
+            </div>
+        </form>
+
+
+      </div>
+      
+     
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<!-- ./ Add Chapter Modal End  -->
 
 <!-- Edit Module Model -->
 <div class="modal fade" tabindex="-1" role="dialog" id="module_edit_modal">
@@ -445,72 +501,9 @@ This Process cannot be Rolled Back
 <?php require_once('includes/common-js.php');?>
 <!---add more branch------>
 <script src="<?= base_url().'assets/js/admin/course.js' ?>"></script>
-<script type="text/javascript">
 
-$(document).ready(function(){
-$('.add_button').click(function() {
-//alert("hai");
-var maxField = 10;
-var x = 1;
-
-$.ajax({
-type: "POST",
-url: "add_branch",
-success: function(html) 
-{
-var response=JSON.parse(html);  
-$('.wrappers').append(response['fieldHTML']);
-}
-});
-
-}); 
-
-});
-</script>
-<!---close add more branch-->
-<!-- status change-->
-<script type="text/javascript">
-$(document).ready(function()
-{
-$("[name='status-change']").bootstrapSwitch();
-$('input[name="status-change"]').on('switchChange.bootstrapSwitch', function(event, state) {
-var this_=$(this);
-var id=$(this).data('id');
-var status=$(this).data('status');
-
-$.ajax({
-type: 'POST',
-url: '<?php echo base_url('index.php/admin/home/faq_status/'); ?>',
-beforeSend: function(){$('input[name="status-change"]').bootstrapSwitch('toggleDisabled', true, true);},
-//complete: function(){},
-data: {id: id,status: status},
-success: function(html)
-{
-$('input[name="status-change"]').bootstrapSwitch('toggleDisabled', false, false);
-}
-});
-});
-
-});
-
-</script>
-</script>
-<script src="<?php echo base_url();?>assets/js/select2.full.min.js"></script>
 <script>
-$('.delete_option').click(function()
-{
-$('#faq_id').val($(this).data('id'));
-});
-</script>
-<script src="https://cdn.ckeditor.com/4.5.7/standard/ckeditor.js"></script>
-<script>
-// $(function () {
-// //Initialize Select2 Elements
-// $(".select2").select2();
-// CKEDITOR.replace('editor1');
-// });
-
-$("body").on('click','.addMore', function() {
+    $("body").on('click','.addMore', function() {
 div = $(this).parents('.module-form');
 let html = "";
 language = $(this).data('language');
@@ -639,11 +632,12 @@ function getModulesByCourse(id) {
          type: 'POST',
          data: {id: id},
          success: function(response) {
-            // console.log(response);
-            html = "ggg";
+            console.log(response);
+            html = "";
             response = JSON.parse(response);
             var i =0;
             response.forEach(function(item) {
+                // console.log(item);
                 i +=  1;
                 html += `
                     <tr>
@@ -653,7 +647,8 @@ function getModulesByCourse(id) {
                         <td>${item.language_name}</td>
                         <td>${item.updated_at}</td>
                         <td>
-                            <i class="fa fa-pencil" id="edit_module" data-module="${item.module_id}" data-course="${item.course_id}" data-moduletitle="${item.module_name}"></i>&nbsp;
+                            <i class="fa fa-plus add_chapter_btn" id="" data-module="${item.module_id}" data-course="${item.course_id}" data-moduletitle="${item.module_name}" title="add chapter" data-language="${item.module_language}"></i>
+                            <i class="fa fa-pencil" id="edit_module" data-module="${item.module_id}" data-course="${item.course_id}" data-moduletitle="${item.module_name}"></i>
                             <i class="fa fa-trash" id="delete_module" data-module="${item.module_id}" data-course="${item.course_id}"></i>
                             <i class="fa fa-eye" id="show_chapters" data-module="${item.module_id}" data-course="${item.course_id}" title="show chapters"></i>
                         </td>
@@ -673,6 +668,53 @@ function getModulesByCourse(id) {
     })   
 }
 
+/* add chapters in modal  */
+    $("body").on('click', ".add_chapter_btn", function() {
+        $("#chapter_modal_module_id").val($(this).data('module'));
+        $("#chapter_modal_course_id").val($(this).data('course'));
+        $("#chapter_modal_language_id").val($(this).data('language'));
+        $("#add_chapter_modal").modal("show");
+    });
+
+    /* add more chapter on click */
+        $("body").on('click', "#add_more_chapter_btn", function() {
+            html = "";
+            html += `
+                <div class="row add-chapter-row">
+                    <div class="col-md-5">
+                        <div class="form-group">
+                            <input type="file" name="" id="" name="modulefile[]">
+                        </div>
+                    </div>
+                    <div class="col-md-5">
+                        <input type="text" name="module_url[]" class="form-control" placeholder="Video Url">
+                    </div>
+                    <div class="col-md-2">
+                        <button type="button" class="btn btn-modal remove_more_chapter_btn" data-language="" data-olaka="" id="">
+                            -
+                        </button>
+                    </div>
+                </div>
+            `;
+            $("#chapters_modal").append(html);
+
+        });
+    /* /. add more chapter on click */
+
+    /* remove more chapter on click */
+        $("body").on('click', '.remove_more_chapter_btn', function() {
+           $(this).closest('.row').remove();
+        });
+    /* /. remove more chapter on click */
+
+    /* save chapters in modal */
+        $("body").on("click", "#add_chapter_modal_save_btn", function() {
+            
+        })
+    /* /. save chapters in modal */
+
+
+/* add chapters in modal  */
 // Show Chapters
 $('body').on("click", "#show_chapters", function() {
     var module_id = $(this).data('module');

@@ -979,40 +979,38 @@ class Home extends CI_Controller {
         $response = '';
         $fieldHTML = '';
          
-        $fieldHTML.= '<div class="j-row"><div class="j-span3 j-unit"> <div class="j-input">
-                               <input type="text" id="course_module" name="course_module" placeholder="Enter Module" value="">
-																				   <span class="j-tooltip j-tooltip-right-top">Enter Module</span>
-                                                                            </div>
-                                                                        </div>';
-                        
-            
-                $fieldHTML.= '
-                  									    <div class="j-span3 j-unit">
-                                                                            <div class="j-input j-append-small-btn">
-                                                                                <div class="j-file-button">
-                                                                                    Browse
-                                                                                    <input type="file" name="course_pdf" onchange="document.getElementById("file1_input").value = this.value;">
+        $fieldHTML.= '
+            <div class="j-row"><div class="j-span3 j-unit"> 
+                <div class="j-input">
+                    <input type="text" id="course_module" name="course_module" placeholder="Enter Module" value="">
+					<span class="j-tooltip j-tooltip-right-top">Enter Module</span>
+                </div>
+            </div>';
+        $fieldHTML.= '
+            <div class="j-span3 j-unit">
+                <div class="j-input j-append-small-btn">
+                    <div class="j-file-button">
+                     Browse
+                        <input type="file" name="course_pdf" onchange="document.getElementById("file1_input").value = this.value;">
 																					
-                                                                                </div>
-                                                                                <input type="text" id="file1_input" readonly="" placeholder="Add Course Pdf">
-																				
-                                                <input type="hidden" name="temp_img" value="">
-                           
-                                                                               <span class="j-tooltip j-tooltip-right-top">Course Pdf</span>
-                                                                            </div>
-                                                                        </div>';
-																		 $fieldHTML.= '<div class="j-span3 j-unit">
-                                                                            <div class="j-input">
-                                                                              
-                                                                                <input type="text" id="course_vdo_url" name="course_vdo_url" placeholder="Youtube Url" value="">
-																				   <span class="j-tooltip j-tooltip-right-top">Youtube Video Url</span>
-                                                                            </div>
-                                                                        </div>
-																														<div class="col-md-2">
-                            <div class="form-group">
-                                <a href="javascript:void(0);" class="remove_button" title="Add field" style="">Cancel</a>
-                            </div>
-                        </div></div>';
+                    </div>
+                    <input type="text" id="file1_input" readonly="" placeholder="Add Course Pdf">
+                    <input type="hidden" name="temp_img" value="">
+                    <span class="j-tooltip j-tooltip-right-top">Course Pdf</span>
+                </div>
+            </div>';
+		$fieldHTML.= '
+            <div class="j-span3 j-unit">
+                <div class="j-input">
+                    <input type="text" id="course_vdo_url" name="course_vdo_url" placeholder="Youtube Url" value="">
+					<span class="j-tooltip j-tooltip-right-top">Youtube Video Url</span>
+                </div>
+            </div>
+            <div class="form-group">
+                <a href="javascript:void(0);" class="remove_button" title="Add field" style="">Cancel
+                </a>
+            </div></div> 
+        </div>';
         $response['fieldHTML'] = $fieldHTML;
         echo json_encode($response);
     }
