@@ -66,5 +66,11 @@
           return $result;
         }
 
+        /* insert chapters */ 
+        public function insert_chapters($data) {
+            $this->db->insert_batch('tbl_chapters', $data);
+            return 'inserted';
+        }
+
 
     }

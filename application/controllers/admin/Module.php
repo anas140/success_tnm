@@ -216,10 +216,12 @@
             );
           }
           // $this->
-          print_r($data);exit;
+          
           // $data = array(
           //     'module_id' => 
           // );
+          $result = $this->module_model->insert_chapters($data);
+          print_r($result); exit;
 
         }
         
