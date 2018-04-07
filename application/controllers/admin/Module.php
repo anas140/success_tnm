@@ -193,35 +193,41 @@
           $result = $this->module_model->delete_chapter($chapter_id);
           echo $result;
         } 
+
         // Create Chapters In Modal
         public function create_chapter() {
-          // print_r($_POST);exit;
           // print_r($_FILES);exit;
           $count = count($this->input->post('module_url'));
-          // echo $count;exit;
           $module_url = $this->input->post('module_url');
           $module_id = $this->input->post('module_id');
           $language_id = $this->input->post('language_id');
           $course_id = $this->input->post('course_id');
-
-          $data = array();
+          
 
           for($i = 0; $i < $count; $i++) {
-            $data[$i] = array(
+            if(!empty($module_url[$i])) {
+              $data[$i] = array(
                 'module_id' => $module_id,
                 'course_id' => $course_id,
                 'chapter_language_id' => $language_id,
                 'content' => $module_url[$i],
-                'content_type' => 1, //pdf
-            );
+                'content_type' => 1, //url
+              );
+            }
           }
-          // $this->
           
-          // $data = array(
-          //     'module_id' => 
-          // );
-          $result = $this->module_model->insert_chapters($data);
-          print_r($result); exit;
+          if(isset($data)) {
+            $result = $this->module_model->insert_chapters_url($data);
+            $this->session->set_flashdata('chapter_inserted', 'Chapters Inserted Successfully');
+            redirect('/admin/module/show');
+            
+          } 
+          // else if() {
+
+          // } else {
+
+          // }
+          
 
         }
         

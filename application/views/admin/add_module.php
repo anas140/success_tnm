@@ -139,13 +139,25 @@
                                         <div class="row">
                                             <div class="col-sm-12">
                                                 <!-- Job application card start -->
+
+
+                                                <!-- Flash Data -->
+                                                    <?php if($this->session->flashdata('chapter_inserted')): ?>
+                                                        <div class="alert alert-success">
+                                                          <strong>Success!</strong> <?= $this->session->flashdata('chapter_inserted'); ?>.
+                                                        </div>
+                                                    <?php endif; ?>
+                                                <!--./  Flash Data -->
+
+
+
                                                 <div class="card">
                                                     <div class="card-header">
                                                         <h4 class="box-title" style="color:#448aff";>
                                                             Add Course Module
                                                         </h4>
-                                                    <span></span>
-                                                </div>
+                                                        <span></span>
+                                                    </div>
                                                 <div class="card-block">
                                                     <div class="j-wrapper ">
 <form action="<?php echo base_url('admin/module/create'); ?>" method="post" class="j-pro" id="j-pro" enctype="multipart/form-data" novalidate>
@@ -368,7 +380,6 @@ This Process cannot be Rolled Back
 </div>
 
 <!-- ////////////////////////////////////////////////////////////////////////////-->
-
 
 
 
@@ -864,6 +875,13 @@ $('body').on("click", "#delete_module", function() {
     }
     
 })
+
+    // flashdta close
+    window.setTimeout(function() {
+        $(".alert").fadeTo(500, 0).slideUp(500, function(){
+            $(this).remove(); 
+        });
+    }, 4000);
 
 </script>
 
