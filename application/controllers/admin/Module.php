@@ -197,14 +197,34 @@
         // Create Chapters In Modal
         public function create_chapter() {
           // print_r($_FILES);exit;
-          $count = count($this->input->post('module_url'));
+          $pdf_count = count($_FILES['modulefile']['name']);
+          // echo $pdf_count; exit;
+          // print_r($_FILES['modulefile']['name']);exit;
+          $url_count = count($this->input->post('module_url'));
           $module_url = $this->input->post('module_url');
           $module_id = $this->input->post('module_id');
           $language_id = $this->input->post('language_id');
           $course_id = $this->input->post('course_id');
           
+          for($f = 0; $f < $pdf_count; $f++ ) {
+            $_FILES['pdf']['name']     = $_FILES['modulefile']['name'][$f];
+            $_FILES['pdf']['type']     = $_FILES['modulefile']['type'][$f];
+            $_FILES['pdf']['tmp_name'] = $_FILES['modulefile']['tmp_name'][$f];
+            $_FILES['pdf']['error']    = $_FILES['modulefile']['error'][$f];
+            $_FILES['pdf']['size']     = $_FILES['modulefile']['size'][$f];
 
-          for($i = 0; $i < $count; $i++) {
+            $config['upload_path'] = './uploads/modules/pdf';
+            $config['allowed_types'] = 'gif|jpg|jpeg|png|GIF|JPEG|PNG|JPG';
+            $time = time();
+            $config['file_name'] = "MOINU_".$time;
+            $config['size']      = 0 ;
+            $config['overwrite'] = false;
+            $this->load->library('upload', $config);
+
+
+          }
+
+          for($i = 0; $i < $url_count; $i++) {
             if(!empty($module_url[$i])) {
               $data[$i] = array(
                 'module_id' => $module_id,
