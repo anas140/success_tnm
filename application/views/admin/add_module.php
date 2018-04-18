@@ -472,7 +472,7 @@ This Process cannot be Rolled Back
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h4 class="modal-title">Edit Module</h4>
+        <h4 class="modal-title">Chapters</h4>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
       </div>
       <div class="modal-body">
@@ -506,6 +506,37 @@ This Process cannot be Rolled Back
 </div><!-- /.modal -->
 <!-- ./ Edit Module End  -->
 
+<!-- edit chapter modal -->
+<div class="modal fade" tabindex="-1" role="dialog" id="chapter_edit_modal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Edit chapter</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      </div>
+      <div class="modal-body">
+        <form accept="" method="post"> 
+            <div class="form-group">
+                <label for="Title">Title</label>
+                <input type="hidden" name="chapter_id" id="modal_chapter_id" value="">
+                <input type="hidden" name="course_id" id="modal_chapter_id" value="">
+
+                <input type="text" class="form-control" name="title" id="modal_module_title">
+            </div>
+            <!-- <input type="submit" class="btn btn-primary" value="Update"> -->
+        </form>
+
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" id="edit_module_modal_btn" class="btn btn-primary">Save changes</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<!-- edit chapter modal -->
+
 <!-- ./Models -->
 
 
@@ -533,7 +564,7 @@ html += `
 </div>
 
 <div class="j-span2 j-unit">
-    <button type="button" class="btn-link delete style="margin-top: 26px;float: left;" data-olaka="0">delete </button>
+    <button type="button" class="btn delete style="margin-top: 26px;float: left;" data-olaka="0">Remove Module</button>
     </div>
 
 
@@ -779,6 +810,13 @@ function showChapters(module_id) {
         }
     });
 }
+
+// Edit Chapter 
+$('body').on('click', '.edit_chapter', function() {
+    $("#show_chapters_modal").modal('hide');
+    console.log($(this).data('chapter'));
+
+})
 
 // Delete Chapter
 $('body').on('click', ".delete_chapter", function() {

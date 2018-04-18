@@ -138,7 +138,7 @@
                             </div>
 
                             <div class="">
-                                <button type="button" class="btn-small addMore style="margin-top: 4px;float: left;" data-language='.$result[$i]['language_id'].' data-olaka=0>Add More</button>
+                                <button type="button" class="btn btn-success btn-small addMore style="margin-top: 4px;float: left;" data-language='.$result[$i]['language_id'].' data-olaka=0>Add Module</button>
                             </div>
                         </div>
     
