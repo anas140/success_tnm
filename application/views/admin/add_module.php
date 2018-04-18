@@ -694,7 +694,7 @@ function getModulesByCourse(id) {
                 <div class="row add-chapter-row">
                     <div class="col-md-5">
                         <div class="form-group">
-                            <input type="file" name="" id="" name="modulefile[]">
+                            <input type="file" name="modulefile[]">
                         </div>
                     </div>
                     <div class="col-md-5">

@@ -108,6 +108,7 @@ class Home extends CI_Controller {
        //redirect($header_type);
     }
   }
+
 	 // public function inquiry() {
   
   //       $name = $this->input->post('name');

@@ -36,7 +36,6 @@
                 foreach ($module_file[$key][$key1] as $files) 
                 {
                   $i=0;
-                  //print_r($files);exit;
                  foreach ($files as $img) 
                  {
                    
@@ -197,16 +196,60 @@
         // Create Chapters In Modal
         public function create_chapter() {
           // print_r($_FILES);exit;
-          $count = count($this->input->post('module_url'));
+          $pdf_count = count($_FILES['modulefile']['name']);
+          // echo $pdf_count; exit;
+          // print_r($_FILES['modulefile']['name']);exit;
+          $url_count = count($this->input->post('module_url'));
           $module_url = $this->input->post('module_url');
           $module_id = $this->input->post('module_id');
           $language_id = $this->input->post('language_id');
           $course_id = $this->input->post('course_id');
-          
+          // print_r($_FILES['modulefile']);exit;
+          for($f = 0; $f < $pdf_count; $f++ ) {
+            $_FILES['userfile']['name']     = $_FILES['modulefile']['name'][$f];
+            $_FILES['userfile']['type']     = $_FILES['modulefile']['type'][$f];
+            $_FILES['userfile']['tmp_name'] = $_FILES['modulefile']['tmp_name'][$f];
+            $_FILES['userfile']['error']    = $_FILES['modulefile']['error'][$f];
+            $_FILES['userfile']['size']     = $_FILES['modulefile']['size'][$f];
 
-          for($i = 0; $i < $count; $i++) {
+            $config['upload_path'] = './uploads/modules/pdf';
+            $config['allowed_types'] = '';
+
+            $time = time();
+            $tmp_name = explode('.',$_FILES['modulefile']['name'][$f]);
+            
+            $config['file_name'] = $tmp_name[0].$time.'.'.$tmp_name[1];
+            $config['allowed_types'] = 'gif|jpg|jpeg|png|GIF|JPEG|PNG|JPG';
+            $config['size']      = 0;
+            $config['overwrite'] = true;
+            
+            $this->load->library('upload', $config);
+
+            if($this->upload->do_upload('userfile')) {
+              $data_pdf[$f] = array(
+                'module_id'           => $module_id,
+                'course_id'           => $course_id,
+                'chapter_language_id' => $language_id,
+                'content'             => $this->upload->data('file_name'),
+                'content_type'        => 0 //pdf
+              );
+            } else {
+              print_r($this->upload->display_errors());exit;
+            }
+
+          }
+
+          if(isset($data_pdf)) {
+            $result = $this->module_model->insert_chapters_url($data_pdf);
+            $this->session->set_flashdata('chapter_inserted', 'Chapters Inserted Successfully');
+            $insert_pdf_success = true;
+          } else {
+            echo 'pdf not found';exit;
+          }
+
+          for($i = 0; $i < $url_count; $i++) {
             if(!empty($module_url[$i])) {
-              $data[$i] = array(
+              $data_url[$i] = array(
                 'module_id' => $module_id,
                 'course_id' => $course_id,
                 'chapter_language_id' => $language_id,
@@ -216,18 +259,17 @@
             }
           }
           
-          if(isset($data)) {
-            $result = $this->module_model->insert_chapters_url($data);
-            $this->session->set_flashdata('chapter_inserted', 'Chapters Inserted Successfully');
-            redirect('/admin/module/show');
-            
+          if(isset($data_url)) {
+            $result = $this->module_model->insert_chapters_url($data_url);
+            $insert_url_success = true;
           } 
-          // else if() {
 
-          // } else {
-
-          // }
-          
+          if(isset($insert_url_success) || isset($insert_pdf_success)) {
+             $this->session->set_flashdata('chapter_inserted', 'Chapters Inserted Successfully');
+            redirect('/admin/module/show');
+          } else {
+            $this->session->set_flashdata('chapter_not_inserted', 'Error Occured');
+          }
 
         }
         

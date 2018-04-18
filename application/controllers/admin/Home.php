@@ -613,6 +613,7 @@ class Home extends CI_Controller {
      /////event edit/////////
     function event_edit($event_id)
     {
+        // echo $event_id;exit;
           $this->admin->start_session();
         if(!$this->admin->is_loggedin())
         {
@@ -969,7 +970,7 @@ class Home extends CI_Controller {
         $this->load->view('admin/add-course', $this->data);
     }
 ////////add more course module///////
-        function add_branch()
+       /* function add_branch()
     {
         //echo "hai";
         //exit;
@@ -1013,7 +1014,51 @@ class Home extends CI_Controller {
         </div>';
         $response['fieldHTML'] = $fieldHTML;
         echo json_encode($response);
-    }
+    } */
+    function add_branch()
+   {
+       //echo "hai";
+       //exit;
+       //$country = $this->tbl_location->get_country();
+       //$city = $this->tbl_location->get_cities();
+       //$language = $this->event_model->get_all_language();
+       $response = '';
+       $fieldHTML = '<div style="width:100%;float:left;"><div class="j-span3 j-unit">
+                                                         <div class="j-input">
+                                                                          
+                                                                               <input type="text" id="first_name" name="seat_type[]" placeholder="Seat Type" value="">
+                                                                                  <span class="j-tooltip j-tooltip-right-top">Seat Type</span>
+                                                                           </div>
+                                                                           </div>
+                                                                                  ';
+        
+       
+                       
+           
+               $fieldHTML.= '<div class="j-span3 j-unit"> 
+       <div class="j-input">
+                                                                          
+                                                                               <input type="text" id="first_name" name="seat_rate[]" placeholder="Rate" value="">
+                                                                                  <span class="j-tooltip j-tooltip-right-top">Rate</span>
+                                                                           </div>
+                                                                       </div>
+                  ';
+$fieldHTML.= '                             <div class="j-span3 j-unit">
+                                                         <div class="j-input">
+                                                                          
+                                                                               <input type="text" id="first_name" name="no_seat[]" placeholder="No Seat " value="">
+                                                                                  <span class="j-tooltip j-tooltip-right-top">No Of Seat</span>
+                                                                           </div>
+                                                                           </div>
+
+<div class="col-md-2">
+                           <div class="form-group">
+                               <a href="javascript:void(0);" class="remove_button" data-id="" title="Add field" style="">Cancel</a>
+                           </div></div>
+                       ';
+       $response['fieldHTML'] = $fieldHTML;
+       echo json_encode($response);
+   }
    
     //////close add more course module/////
     // function course_delete($course_id)

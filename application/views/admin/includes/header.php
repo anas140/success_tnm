@@ -61,8 +61,8 @@
                                             <!--<img class="d-flex align-self-center img-radius" src="<?php echo base_url();?>assets/files/assets/images/avatar-2.jpg" alt="Generic placeholder image">-->
                                             <div class="media-body">
                                                 <h5 class="notification-user">John Doe</h5>
-                                                <p class="notification-msg">Lorem ipsum dolor sit amet, consectetuer elit.<?php
-												print_r($notification);?></p>
+                                                <!-- <p class="notification-msg">Lorem ipsum dolor sit amet, consectetuer elit.<?php
+												//print_r($notification);?></p> -->
                                                 <span class="notification-time">30 minutes ago</span>
                                             </div>
                                         </div>
