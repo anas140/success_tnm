@@ -190,8 +190,15 @@
         // delete chapter
         public function delete_chapter() {
           $chapter_id = $this->input->post('id');
-          $result = $this->module_model->delete_chapter($chapter_id);
-          echo $result;
+          // check if this chapter is pdf ? true delete file also
+          // print_r($this->module_model->checkPdf($chapter_id));exit;
+          if($this->module_model->checkPdf($chapter_id)) {
+            $file = $this->module_model->getFIleName($chapter_id);
+            unlink('uploads/modules/pdf/'.$file);
+          }
+          // $this->module_model->delete_chapter($chapter_id);
+          echo $this->module_model->delete_chapter($chapter_id);
+          // echo $result;
         } 
 
         // Create Chapters In Modal

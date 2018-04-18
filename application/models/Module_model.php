@@ -71,5 +71,23 @@
             $this->db->insert_batch('tbl_chapters', $data);
         }
 
+        public function checkPdf($id) {
+            $type = $this->db->select('content_type')
+                     ->where('chapter_id', $id)
+                     ->get('tbl_chapters')->row()->content_type;
+            if($type) {
+                return FALSE;
+            } else {
+                return TRUE;
+            }
+        }
+
+        public function getFileName($id) {
+            $file = $this->db->select('content')
+                             ->where('chapter_id', $id)
+                             ->get('tbl_chapters')->row()->content;
+            return $file;
+        }
+
 
     }
