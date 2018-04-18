@@ -191,14 +191,11 @@
         public function delete_chapter() {
           $chapter_id = $this->input->post('id');
           // check if this chapter is pdf ? true delete file also
-          // print_r($this->module_model->checkPdf($chapter_id));exit;
           if($this->module_model->checkPdf($chapter_id)) {
             $file = $this->module_model->getFIleName($chapter_id);
             unlink('uploads/modules/pdf/'.$file);
           }
-          // $this->module_model->delete_chapter($chapter_id);
           echo $this->module_model->delete_chapter($chapter_id);
-          // echo $result;
         } 
 
         // Create Chapters In Modal
@@ -212,6 +209,7 @@
           $module_id = $this->input->post('module_id');
           $language_id = $this->input->post('language_id');
           $course_id = $this->input->post('course_id');
+<<<<<<< HEAD
           // print_r($_FILES['modulefile']);exit;
           for($f = 0; $f < $pdf_count; $f++ ) {
             $_FILES['userfile']['name']     = $_FILES['modulefile']['name'][$f];
@@ -253,6 +251,25 @@
             $insert_pdf_success = true;
           } else {
             echo 'pdf not found';exit;
+=======
+          
+          for($f = 0; $f < $pdf_count; $f++ ) {
+            $_FILES['pdf']['name']     = $_FILES['modulefile']['name'][$f];
+            $_FILES['pdf']['type']     = $_FILES['modulefile']['type'][$f];
+            $_FILES['pdf']['tmp_name'] = $_FILES['modulefile']['tmp_name'][$f];
+            $_FILES['pdf']['error']    = $_FILES['modulefile']['error'][$f];
+            $_FILES['pdf']['size']     = $_FILES['modulefile']['size'][$f];
+
+            $config['upload_path'] = './uploads/modules/pdf';
+            $config['allowed_types'] = 'gif|jpg|jpeg|png|GIF|JPEG|PNG|JPG';
+            $time = time();
+            $config['file_name'] = "MOINU_".$time;
+            $config['size']      = 0 ;
+            $config['overwrite'] = false;
+            $this->load->library('upload', $config);
+
+
+>>>>>>> f674b941c45b955647346049d6cb7f08bb85e4b6
           }
 
           for($i = 0; $i < $url_count; $i++) {
