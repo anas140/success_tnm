@@ -89,6 +89,7 @@
                 }
               }
             }
+            redirect('/admin/module/show');
           }
         public function get_languages() {
             $data['languages'] = $this->course_model->get_languages();
