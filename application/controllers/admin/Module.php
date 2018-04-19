@@ -96,7 +96,7 @@
                 }
               }
             }
-            if($inserted) {
+            if(isset($inserted)) {
               $this->session->set_flashdata('module_inserted', 'Module added successfully');
             } else {
               $this->session->set_flashdata('module_not_inserted', 'Some Error Occured');
