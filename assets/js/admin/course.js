@@ -15,23 +15,8 @@ $(document).ready(function() {
                 console.log(error);
             }
         });
-        // function getModules(id) {
-        //     $.ajax({
-        //         url: 'get_modules',
-        //         type: 'POST',
-        //         data: {id: id},
-        //         success: function(response) {
-        //             console.log(response);
-        //         },
-        //         error: function(xhr, status, error) {
-        //             console.log(error)
-        //         }
-        //     })
-        // }
-
-        
     });
-  })
+  });
 
     function addMoreModule(id) {
         // length += 1;

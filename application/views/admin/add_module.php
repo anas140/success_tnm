@@ -147,6 +147,16 @@
                                                           <strong>Success!</strong> <?= $this->session->flashdata('chapter_inserted'); ?>.
                                                         </div>
                                                     <?php endif; ?>
+                                                    <?php if($this->session->flashdata('module_inserted')): ?>
+                                                        <div class="alert alert-success">
+                                                          <strong>Success!</strong> <?= $this->session->flashdata('module_inserted'); ?>.
+                                                        </div>
+                                                    <?php endif; ?>
+                                                    <?php if($this->session->flashdata('chapter_not_inserted')): ?>
+                                                        <div class="alert alert-danger">
+                                                          <strong>Error!</strong> <?= $this->session->flashdata('chapter_not_inserted'); ?>.
+                                                        </div>
+                                                    <?php endif; ?>
                                                 <!--./  Flash Data -->
 
 
@@ -606,6 +616,28 @@ $(div).append(html);
 
 
 <script>
+$(document).ready(function() {
+    $("#course_name").on('change', function() {
+        // alert(this.value)
+        $.ajax({
+            url: '/success/admin/module/language_count_and_get',
+            type: 'POST',
+            data: {id: this.value},
+            success: function(response) {
+                // console.log(response);
+                $("#add_module_form").html(response);
+               // $("#add_module_form").append(response);
+            //    getModules(id)
+            },
+            error: function(xhr,status,error) {
+                console.log(error);
+            }
+        });
+    });
+  });
+
+
+
     $("body").on('click','.add', function() {
         div = $(this).closest('.j-row');
         let html = "";
