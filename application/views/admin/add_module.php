@@ -117,15 +117,7 @@
                                         </div>
                                     </div>
                                     <div class="col-md-4">
-                                        <!--<ul class="breadcrumb">
-                                            <li class="breadcrumb-item">
-                                                <a href="index.html"> <i class="fa fa-home"></i> </a>
-                                            </li>
-                                            <li class="breadcrumb-item"><a href="#!">Ready To Use</a>
-                                            </li>
-                                            <li class="breadcrumb-item"><a href="#!">Job Application Form</a>
-                                            </li>
-                                        </ul>-->
+                                       
                                     </div>
                                 </div>
                             </div>
@@ -188,19 +180,6 @@
         </div>
     </div>
 	<div class="j-row wrappers" id="add_module_form"></div>
-	    <!--<div class="j-span3 j-unit">
-            <div class="j-input">
-                <input type="text" id="course_module" name="course_module" placeholder="Module 1" value="<?php echo @$profile[0]->profile_title ?>">
-				<span class="j-tooltip j-tooltip-right-top">Module1</span>
-            </div>
-        </div>
-		<div class="j-span3 j-unit">
-            <div class="j-input j-append-small-btn">
-                <div class="j-file-button">
-                    Browse
-                    <input type="file" name="course_pdf" onchange="document.getElementById('file1_input').value = this.value;">
-                </div>
-                <input type="text" id="file1_input" readonly="" placeholder="Add Course Pdf">
 				<?php if(!empty($package[0])){?>
                         <img  src="<?php echo base_url();?>uploads/package/<?php echo  $package[0]->package_image; ?>" width="100" height="100">
                 <?php } ?>
@@ -228,12 +207,7 @@
             </div>
 		</div>
         <div class="divider gap-bottom-25"></div>
-            <!-- start country -->
-            <!-- start files -->
-            <!-- end files -->
-            <!-- start response from server 
-            <div class="j-response"></div>
-        </div> -->
+            
         <div class="j-footer">
             <button type="submit" class="btn btn-primary">Save</button>
             <button type="reset" class="btn btn-default m-r-20">cancel</button>
@@ -390,9 +364,6 @@ This Process cannot be Rolled Back
 </div>
 
 <!-- ////////////////////////////////////////////////////////////////////////////-->
-
-
-
 <!-- Models -->
 <!-- Add Chapter Model -->
 <div class="modal fade" tabindex="-1" role="dialog" id="add_chapter_modal">
