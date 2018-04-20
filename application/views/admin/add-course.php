@@ -112,36 +112,21 @@
                                                 <!-- Job application card start -->
                                                 <div class="card">
                                                     <div class="card-header">
-                                                    <?php
-            if(!empty($single_course[0]))
-                             {
-                             
-                echo '<h4 class="box-title" style="color:#448aff";>Edit Course</h4>';
-                
-                }
-                else
-                {
-                     echo '<h4 class="box-title" style="color:#448aff";>Add Course</h4>';
-                }
-            ?>
-                                                        <span></span>
-                                                    </div>
-                                                    <div class="card-block">
-                                                        <div class="j-wrapper ">
-                                                          <?php
-                             if(!empty($single_course[0]))
-                             {
-                              ?>
-                                                            <form action="<?php echo base_url('admin/home/course_edit/'.$single_course[0]->course_id); ?>" method="post" class="j-pro" id="j-pro" enctype="multipart/form-data" >
-															   <?php
-                           }
-                     else{
-                           ?>
-						      <form action="<?php echo base_url('admin/home/add_course'); ?>" method="post" class="j-pro" id="j-pro" enctype="multipart/form-data" novalidate>
-															
-						        <?php
-                            }
-                               ?>
+<?php if(!empty($single_course[0])): ?>
+    <h4 class="box-title" style="color:#448aff";>Edit Course</h4>
+<?php else: ?>
+    <h4 class="box-title" style="color:#448aff";>Add Course</h4>
+<?php endif; ?>
+<span></span>
+</div>
+
+<div class="card-block">
+    <div class="j-wrapper ">
+    <?php if(!empty($single_course[0])): ?>
+        <form action="<?php echo base_url('admin/home/course_edit/'.$single_course[0]->course_id); ?>" method="post" class="j-pro" id="j-pro" enctype="multipart/form-data" >
+<?php else: ?>
+	<form action="<?php echo base_url('admin/home/add_course'); ?>" method="post" class="j-pro" id="j-pro" enctype="multipart/form-data" novalidate>
+<?php endif; ?>
                                                                 <!-- end /.header-->
                                                                 <div class="j-content">
                                                                     <!-- start name -->
