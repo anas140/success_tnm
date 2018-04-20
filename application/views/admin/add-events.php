@@ -10,6 +10,11 @@
         <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC8svOfLUwCNBV-kNMhZKF66srk0XJbdYI&callback=initMap"
   type="text/javascript"></script>
     </head>
+    <style>
+        .btn-rounded {
+            border-radius: 50%;
+        }
+    </style>
 
 <body onload="codeAddress()">
     <!-- Pre-loader start -->
@@ -64,7 +69,7 @@
                 </div>
             </div>
         </div>
-    </div> 
+    </div>
     <style type="text/css">
           #map{     width: 570px;height: 400px; }
         </style>
@@ -120,331 +125,258 @@
                                             <div class="col-sm-12">
                                                 <!-- Job application card start -->
                                                 <div class="card">
-                                                    <div class="card-header">
-                                                    <?php
-                                                      if($this->session->flashdata('message')){ ?>
-        <div class="alert alert-info alert-dismissible no-border fade in mb-2 alert-success" role="alert" style="background-color:#448aff !important;opacity:1;color:#fff;height:">
-                                                     <h4><?php
-                                                       echo $this->session->flashdata('message');?></h4>
-                                                      
-                                                       </div>
+    <div class="card-header">
+        <?php if($this->session->flashdata('message')): ?>
+            <div class="alert alert-info alert-dismissible no-border fade in mb-2 alert-success" role="alert" style="background-color:#448aff !important;opacity:1;color:#fff;height:">
+                <h4><?= $this->session->flashdata('message'); ?></h4>
+            </div>
+        <?php endif; ?>
 
-                                                    
-                                                                                             <?php
-                                                                                         }
-            if(!empty($single_event[0]))
-                             {
-                             
-                echo '<h4 class="box-title" style="color:#448aff";>Edit Event</h4>';
-                
-                }
-                else
-                {
-                     echo '<h4 class="box-title" style="color:#448aff";>Add Event</h4>';
-                }
-            ?>
-                                                        <span></span>
-                                                    </div>
-                                                    <div class="card-block">
-                                                        <div class="j-wrapper ">
-                                                                                                <?php
-                             if(!empty($single_event[0]))
-                             {
-                              ?>
-                                                            <form action="<?php echo base_url('admin/home/event_edit/'.$single_event[0]->event_id); ?>" method="post" class="j-pro" id="j-pro" enctype="multipart/form-data" >
-                                                               <?php  
-                           }
-                     else{
-                           ?>
-                              <form action="<?php echo base_url('admin/home/add_events'); ?>" method="post" class="j-pro" id="j-pro" enctype="multipart/form-data" novalidate>
-                                                            
-                                <?php
-                            }
-                               ?>
-                                                                <!-- end /.header-->
-                                                                <div class="j-content">
-                                                                    <!-- start name -->
-                                                                    <div class="j-row">
-                                                                       <div class="j-span6 j-unit">
-                                                                            <div class="j-input">
-                                                                            <?php
-                                                                            //print_r($category);
-                                                                            ?>
-                                                            <select name="event_category" class="form-control">
-                                                            <option value="">Event Category</option>
-                                                            <?php
-                                                            
-                                foreach($category as $categories)
-                                {
-                                ?>
-                            
-                             <option value="<?php echo $categories->category_id; ?>" 
-                             <?php if(@$single_event[0]->event_category == @$categories->category_id){?> selected="selected" <?php }?>> 
-                             <?php echo $categories->category_name; ?>
-                             </option>
-                            <?php
-                            /*foreach ($category as $key=>$value) {
-                            
-                            echo '<option value="'.$value->category_id.'">'.$value->category_name.'</option>';
-                            }*/
-                            ?>
-                            <?php
-                                }
-                                ?>
+        <?php if(!empty($single_event[0])): ?>
+            <h4 class="box-title" style="color:#448aff";>Edit Event</h4>
+        <?php else: ?>
+            <h4 class="box-title" style="color:#448aff";>Add Event</h4>
+        <?php endif; ?>
+        <span></span>
+    </div>
+    <div class="card-block">
+        <div class="j-wrapper ">
+            <?php if(!empty($single_event[0])): ?>
+                <form action="<?php echo base_url('admin/home/event_edit/'.$single_event[0]->event_id); ?>" method="post" class="j-pro" id="j-pro" enctype="multipart/form-data" >
+            <?php else: ?>
+                <form action="<?php echo base_url('admin/home/add_events'); ?>" method="post" class="j-pro" id="j-pro" enctype="multipart/form-data" novalidate>
+            <?php endif; ?>
+            <div class="j-content">
+                <div class="j-row">
+                    <div class="j-span6 j-unit">
+                        <div class="j-input">
+                            <select name="event_category" class="form-control">
+                                <option value="" disabled="disabled">Event Category</option>
+                                <?php foreach($category as $categories): ?>
+                                    <option value="<?= $categories->category_id; ?>" 
+                                    <?php if(@$single_event[0]->event_category == @$categories->category_id){?> selected="selected" <?php }?>> 
+                                        <?= $categories->category_name; ?>
+                                    </option>
+                                <?php endforeach; ?>
                             </select>
-                                                                     
-                                                                                   <span class="j-tooltip j-tooltip-right-top">Event Category</span>
-                                                                            </div>
-                                                                        </div>
+                            <span class="j-tooltip j-tooltip-right-top">Event Category</span>
+                        </div>
+                    </div>
                 <div class="j-span6 j-unit">
                     <div class="j-input">
-                      
                         <input type="text" id="first_name" name="event_name" placeholder="Event Name" value="<?php echo @$single_event[0]->event_name ?>">
-                           <span class="j-tooltip j-tooltip-right-top">Event Name</span>
-                    </div>
-                </div>
-                </div>
-                 <div class="j-row">
-                <div class="j-span6 j-unit">
-                    <div class="j-input">
-                      
-                      <input id="dropper-default" class="form-control" type="text" placeholder="Event Start Date" name="event_start_date" value="<?php echo @$single_event[0]->event_start_date ?>" />
-                         <span class="j-tooltip j-tooltip-right-top">Event Start Date</span>
-                    </div>
-                </div>
-                    <div class="j-span6 j-unit bootstrap-timepicker">
-                    <div class="j-input">
-                        
-                        <input type="text"  name="event_start_time" class="timepicker" placeholder="Event Start Time"  id="pick1" value="<?php echo @$single_event[0]->event_start_time ?>">
-                           <span class="j-tooltip j-tooltip-right-top">Event Start Time</span>
+                        <span class="j-tooltip j-tooltip-right-top">Event Name</span>
                     </div>
                 </div>
             </div>
-            <!-- end name -->
-                                                            
-                                                              
-                                                                    <div class="divider gap-bottom-25"></div>
-                                                                    <!-- start country -->
-                                                                    
-<div class="j-row">
-    <div class="j-span6 j-unit">
+            <div class="j-row">
+                <div class="j-span6 j-unit">
+                    <div class="j-input">
+                        <input id="dropper-default" class="form-control" type="text" placeholder="Event Start Date" name="event_start_date" value="<?php echo @$single_event[0]->event_start_date ?>" />
+                        <span class="j-tooltip j-tooltip-right-top">Event Start Date</span>
+                    </div>
+                </div>
+                <div class="j-span6 j-unit bootstrap-timepicker">
+                    <div class="j-input">
+                        <input type="text"  name="event_start_time" class="timepicker" placeholder="Event Start Time"  id="pick1" value="<?php echo @$single_event[0]->event_start_time ?>">
+                        <span class="j-tooltip j-tooltip-right-top">Event Start Time</span>
+                    </div>
+                </div>
+            </div>
+            <div class="divider gap-bottom-25"></div>
+            <div class="j-row">
+                <div class="j-span6 j-unit">
+                    <div class="j-input">
+                        <input id="dropper-format" class="form-control" type="text" name="event_end_date" placeholder="Event End Date" value="<?php echo @$single_event[0]->event_end_date ?>"/>
+                        <span class="j-tooltip j-tooltip-right-top">Event End Date</span>
+                    </div>
+                    </div>
+                        <div class="j-span6 j-unit bootstrap-timepicker">
+                            <div class="j-input ">
+                                <input type="text"  id="pick2" name="event_end_time" class="timepicker" placeholder="Event End Time" value="<?php echo @$single_event[0]->event_end_time ?>">
+                                <span class="j-tooltip j-tooltip-right-top">Event End Time</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="divider gap-bottom-25"></div>
+                        <div class="j-row">
+                            <div class="j-span6 j-unit">
                                 <div class="j-input">
-                                
-                                  <input id="dropper-format" class="form-control" type="text" name="event_end_date" placeholder="Event End Date" value="<?php echo @$single_event[0]->event_end_date ?>"/>
-                                     <span class="j-tooltip j-tooltip-right-top">Event End Date</span>
+                                    <input type="text" id="first_name" name="event_contact_person" placeholder="Organizer Name" value="<?php echo @$single_event[0]->event_contact_person ?>">
+                                    <span class="j-tooltip j-tooltip-right-top">Organizer Name</span>
                                 </div>
                             </div>
-                               <div class="j-span6 j-unit bootstrap-timepicker">
-                                <div class="j-input ">
-                                   
-                                    <input type="text"  id="pick2" name="event_end_time" class="timepicker" placeholder="Event End Time" value="<?php echo @$single_event[0]->event_end_time ?>">
-                                       <span class="j-tooltip j-tooltip-right-top">Event End Time</span>
+                            <div class="j-span6 j-unit">
+                                <div class="j-input">
+                                    <input type="text" id="first_name" name="event_phone" placeholder="Contact Phone" value="<?php echo @$single_event[0]->event_contact_phone ?>">
+                                    <span class="j-tooltip j-tooltip-right-top">Contact Phone</span>
                                 </div>
                             </div>
                         </div>
-                                                         
-                                                                    <div class="divider gap-bottom-25"></div>
-                                                           
-                                                                    <!-- start files -->
-                                                                    <div class="j-row">
-                                                                        <div class="j-span6 j-unit">
-                                                                            <div class="j-input">
-                                                                           
-                                                                                <input type="text" id="first_name" name="event_contact_person" placeholder="Organizer Name" value="<?php echo @$single_event[0]->event_contact_person ?>">
-                                                                                   <span class="j-tooltip j-tooltip-right-top">Organizer Name</span>
-                                                                            </div>
-                                                                        </div>
-                                                                            <div class="j-span6 j-unit">
-                                                                            <div class="j-input">
-                                                                                
-                                                                                <input type="text" id="first_name" name="event_phone" placeholder="Contact Phone" value="<?php echo @$single_event[0]->event_contact_phone ?>">
-                                                                                   <span class="j-tooltip j-tooltip-right-top">Contact Phone</span>
-                                                                            </div>
-                                                                        </div>
-                                                                           <!--<div class="j-span6 j-unit">
-                                                                            <div class="j-input">
-                                                                                 <h4 class="sub-title">Blog Description</h4>
-                                                                                <input type="text" id="editor1" name="blog_description" placeholder="Blog Description">
-                                                                                   <span class="j-tooltip j-tooltip-right-top">Blog Description</span>
-                                                                                   
-                                                                            </div>
-                                                                        </div>-->
-                                                                    </div>
-                                                                    
-                                                                            <div class="j-row">
-                                                                        <div class="j-span6 j-unit">
-                                                                            <div class="j-input">
-                                                                                <input type="text" id="first_name" name="event_email" placeholder="Contact Email" value="<?php echo @$single_event[0]->event_contact_email ?>">
-                                                                                   <span class="j-tooltip j-tooltip-right-top">Contact Email</span>
-                                                                            </div>
-                                                                        </div>
-                                                                       <div class="j-span6 j-unit">
-                                                                            <div class="j-input j-append-small-btn">
-                                                                                <div class="j-file-button">
-                                                                                    Browse
-                                                                                    <input type="file" name="event_image" onchange="document.getElementById('file1_input').value = this.value;">
-                                                                                </div>
-                                                                                <input type="text" id="file1_input" readonly="" placeholder="Add Event Image">
-                                                                                <?php if(!empty($single_event[0])){?>
-                                                <img  src="<?php echo base_url();?>uploads/events/<?php echo  $single_event[0]->event_image; ?>" width="100" height="100">
-                                                <?php } ?>
-                                                 <input type="hidden" name="temp_img" value="<?php echo @$single_event[0]->event_image; ?>">
-                            <?php echo form_error('event_image','<p class="help-block error_msg">','</p>'); ?>
-                                                                               <span class="j-tooltip j-tooltip-right-top">Event Image</span>
-                                                                            </div>
-                                                                        </div>
-                                                                        </div>
-                                                                          <div class="j-row">
-                                                                          <?php if(!empty($single_event[0]->event_location))
-                                                                        {
-                                                                        ?>
-                                                                                                          <div class="j-span6 j-unit">
-                                                                            <div class="j-input">
-                                                                                   
-
-                                                <label>Event Location</label>
-                                                <input id="address" type="text" name="event_location" placeholder="Event Location" value="<?php echo @$single_event[0]->event_location;?>">
-                                                <input type="button" value="Geocode" onclick="codeAddress()">
-                                                
-
-
-                                        
-                                                                                   <span class="j-tooltip j-tooltip-right-top">Event Location</span>
-                                                                            <div id="map"></div>
-                                                                            </div>
-                                                                            
-                                                                            
-                                                                        </div>
-                                                                        <?php
-                                                                        }
-                                                                        else
-                                                                        {
-                                                                        ?>
-                                                                                <div class="j-span6 j-unit">
-                                                                            <div class="j-input">
-                                                                                   
-
-                                                <label>Event Location</label>
-                                                <input id="address" type="text" value="kannur" name="event_location" placeholder="Event Location">
-                                                <input type="button" value="Geocode" onclick="codeAddress()">
-
-
-
-                                        
-                                                                                   <span class="j-tooltip j-tooltip-right-top">Event Location</span>
-                                                                            <div id="map"></div>
-                                                                            </div>
-                                                                            
-                                                                            
-                                                                        </div>
-                                                                        <?php
-                                                                        }
-                                                                        ?>
-                                                                           <div class="j-span6 j-unit">
-                                                                            <div class="j-input">
-                                                                                 <h4 class="sub-title">Event Description</h4>
-                                                                                <textarea type="text" id="editor1" name="event_description" placeholder="Event Description"><?php echo @$single_event[0]->event_description ?></textarea>
-                                                                                   <span class="j-tooltip j-tooltip-right-top">Event Description</span>
-                                                                                   
-                                                                            </div>
-                                                                        </div>
-                    
-                                                                    </div>
-                                                                    <div class="row">
-                                                                    <?php
-                                                                if(empty($single_event[0])) { ?>
-                                                                   <!--  <label>Seat Management</label><br> -->
-              
-                                                              <div class="j-row wrappers">
-                                                                    <h5 class="sub-title">Seat Management</h5>
-                                                                    
-                                                                    
-                                              <div class="j-span3 j-unit">
-                                                          <div class="j-input">
-                                                                           
-                                                                                <input type="text" id="first_name" name="seat_type[]" placeholder="Seat Type" value="">
-                                                                                   <span class="j-tooltip j-tooltip-right-top">Seat Type</span>
-                                                                            </div>
-                                                                            </div>
-                                                                                                         <div class="j-span3 j-unit">
-                                                          <div class="j-input">
-                                                                           
-                                                                                <input type="text" id="first_name" name="seat_rate[]" placeholder="Rate" value="">
-                                                                                   <span class="j-tooltip j-tooltip-right-top">Rate</span>
-                                                                            </div>
-                                                                            </div>
-                                                                              <div class="j-span3 j-unit">
-                                                          <div class="j-input">
-                                                                           
-                                                                                <input type="text" id="first_name" name="no_seat[]" placeholder="No Seat " value="">
-                                                                                   <span class="j-tooltip j-tooltip-right-top">No Of Seat</span>
-                                                                            </div>
-                                                                            </div>
-                                                                   
-                                                                        <div class="col-md-2">
-                            <div class="form-group">
-                                <a href="javascript:void(0);" class="add_button sarath" title="Add field" style="margin-top: 26px;float: left;">Add More Seats</a>
+                        <div class="j-row">
+                            <div class="j-span6 j-unit">
+                                <div class="j-input">
+                                    <input type="text" id="first_name" name="event_email" placeholder="Contact Email" value="<?php echo @$single_event[0]->event_contact_email ?>">
+                                    <span class="j-tooltip j-tooltip-right-top">Contact Email</span>
+                                </div>
+                            </div>
+                            <div class="j-span6 j-unit">
+                                <div class="j-input j-append-small-btn">
+                                    <div class="j-file-button">
+                                        Browse
+                                        <input type="file" name="event_image" onchange="document.getElementById('file1_input').value = this.value;">
+                                    </div>
+                                    <input type="text" id="file1_input" readonly="" placeholder="Add Event Image">
+                                    <?php if(!empty($single_event[0])){?>
+                                        <img  src="<?php echo base_url();?>uploads/events/<?php echo  $single_event[0]->event_image; ?>" width="100" height="100">
+                                    <?php } ?>
+                                    <input type="hidden" name="temp_img" value="<?php echo @$single_event[0]->event_image; ?>">
+                                    <?php echo form_error('event_image','<p class="help-block error_msg">','</p>'); ?>
+                                    <span class="j-tooltip j-tooltip-right-top">Event Image</span>
+                                </div>
                             </div>
                         </div>
-                    
-                                                                        </div>
-                <?php
-                }
-                ?>
-                                                                  
-                                                                   
-                                                                    <?php
-                                                                    if(!empty($single_event[0])) {
-
-                                                                     echo ' <div class="j-row wrappers"><h5 class="sub-title">Seat Management</h5>';
-                    $seat_type = @$this->event_model->get_seat_type($single_event[0]->event_id);
-                    } 
-                     if(!empty($seat_type))
-                    { 
-                        for($i=0; $i<count($seat_type); $i++) { ?>
-                                              <div class="j-span3 j-unit">
-                                                          <div class="j-input">
-                                                                           
-                                                                                <input type="text" id="first_name" name="seat_type[]" placeholder="Seat Type" value="<?php if(!empty($seat_type)) { echo @$seat_type[$i]->seat_type;} ?>">
-                                                                                   <span class="j-tooltip j-tooltip-right-top">Seat Type</span>
-                                                                            </div>
-                                                                            </div>
-                                                                                                         <div class="j-span3 j-unit">
-                                                          <div class="j-input">
-                                                                           
-                                                                                <input type="text" id="first_name" name="seat_rate[]" placeholder="Rate" value="<?php if(!empty($seat_type)) { echo @$seat_type[$i]->seat_rate;} ?>">
-                                                                                   <span class="j-tooltip j-tooltip-right-top">Rate</span>
-                                                                            </div>
-                                                                            </div>
-                                                                              <div class="j-span3 j-unit">
-                                                          <div class="j-input">
-                                                                           
-                                                                                <input type="text" id="first_name" name="no_seat[]" placeholder="No Seat " value="<?php if(!empty($seat_type)) { echo @$seat_type[$i]->seat_total;} ?>">
-                                                                                   <span class="j-tooltip j-tooltip-right-top">No Of Seat</span>
-                                                                            </div>
-                                                                            </div>
-                                                                            <?php
-                                                                            }
-                                                                            }
-                                                                            ?>
-                                                     <?php
-                                                     if(!empty($single_event[0])) {
-                                                     ?>
-                                                                         <div class="col-md-2">
-                            <div class="form-group">
-                                <a href="javascript:void(0);" class="add_button" title="Add field" style="margin-top: 26px;float: left;">Add More Seats</a>
+                        <div class="j-row">
+                        <?php if(!empty($single_event[0]->event_location)) { ?>
+                            <div class="j-span6 j-unit">
+                                <div class="j-input">
+                                    <label>Event Location</label>
+                                    <input id="address" type="text" name="event_location" placeholder="Event Location" value="<?php echo @$single_event[0]->event_location;?>">
+                                    <input type="button" value="Geocode" onclick="codeAddress()">
+                                    <span class="j-tooltip j-tooltip-right-top">Event Location</span>
+                                    <div id="map"></div>
+                                </div>
                             </div>
-                        </div> 
+                            <?php } else { ?>
+                            <div class="j-span6 j-unit">
+                                <div class="j-input">
+                                    <label>Event Location</label>
+                                    <input id="address" type="text" value="kannur" name="event_location" placeholder="Event Location">
+                                    <input type="button" value="Geocode" onclick="codeAddress()">
+                                    <span class="j-tooltip j-tooltip-right-top">Event Location</span>
+                                    <div id="map"></div>
+                                </div>
+                            </div> <?php } ?>
+                            <div class="j-span6 j-unit">
+                                <div class="j-input">
+                                    <h4 class="sub-title">Event Description</h4>
+                                    <textarea type="text" id="editor1" name="event_description" placeholder="Event Description">
+                                        <?php echo @$single_event[0]->event_description ?>
+                                    </textarea>
+                                    <span class="j-tooltip j-tooltip-right-top">Event Description</span>
+                                </div>
+                            </div>
                         </div>
-                        <?php
-                        }
-                        ?>
-                                                                        
-                                                                    </div>
-                                                                    </div>
-                                                                    <div class="row">
-                                                                                                             <div class="j-span6 j-unit">
-                     <!--                                                        <div class="j-input j-append-small-btn">
+                        <div class="row">
+                            <?php if(empty($single_event[0])) { ?>
+                                <div class="j-row wrappers">
+                                    <h5 class="sub-title">Seat Management</h5>
+                                    <div class="j-span3 j-unit">
+                                        <div class="j-input">
+                                            <input type="text" id="first_name" name="seat_type[]" placeholder="Seat Type" value="">
+                                            <span class="j-tooltip j-tooltip-right-top">Seat Type</span>
+                                        </div>
+                                    </div>
+                                    <div class="j-span3 j-unit">
+                                        <div class="j-input">
+                                            <input type="text" id="first_name" name="seat_rate[]" placeholder="Rate" value="">
+                                            <span class="j-tooltip j-tooltip-right-top">Rate</span>
+                                        </div>
+                                    </div>
+                                    <div class="j-span3 j-unit">
+                                        <div class="j-input">
+                                            <input type="text" id="first_name" name="no_seat[]" placeholder="No Seat " value="">
+                                            <span class="j-tooltip j-tooltip-right-top">No Of Seat</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div class="form-group">
+                                            <a href="javascript:void(0);" class="add_button sarath" title="Add field" style="margin-top: 26px;float: left;">Add More Seatss</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <?php } ?>
+                                <?php if(!empty($single_event[0])): ?>
+                                    <div class="j-row wrappers">
+                                        <div class="row">
+                                            <div class="col-md-9 j-unit"><h5 class="sub-title">Seat Management</h5></div>
+                                            <a href="javascript:void(0);" class="add_button" title="Add field" style="margin-top: 26px;float: left;">Add More Seats</a>
+                                        </div>
+                                        
+                                        <?php foreach($seats as $seat): ?>
+                                        <div class="temp" style="width: 100%; float: left;" data-id="">
+                                            <!-- .col-md -->
+                                            <input type="hidden" name="seat_id[]" value="<?= $seat['seat_id'] ?>">
+                                            <!-- <div class="j-span3 j-unit">
+                                                <?= $seat['seat_id'] ?>
+                                            </div> -->
+                                            <div class="j-span3 j-unit">
+                                                <div class="j-input">
+                                                    <!-- <label for="">Seat Type</label> -->
+                                                    <input type="text" name="seat_type[]" id="" placeholder="Seat Type" value="<?= $seat['seat_type'] ?>" >
+                                                    <span class="j-tooltip j-tooltip-right-top">
+                                                        Seat Type
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div class="j-span3 j-unit">
+                                                <div class="j-input">
+                                                    <!-- <label for="">Seat Rate</label> -->
+                                                    <input type="text" name="seat_rate[]" id="" placeholder="Seat Type" value="<?= $seat['seat_rate'] ?>" >
+                                                    <span class="j-tooltip j-tooltip-right-top">
+                                                        Seat Rate
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div class="j-span3 j-unit">
+                                                <div class="j-input">
+                                                    <!-- <label for="">No Of Seats</label> -->
+                                                    <input type="text" name="no_seat[]" id="" placeholder="No Of Seats" value="<?= $seat['seat_total'] ?>" >
+                                                    <span class="j-tooltip j-tooltip-right-top">
+                                                        No of Seats
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div class="j-span3 j-input">
+                                                <div class="btn btn-rounded btn-danger" data-id="<?= $seat['seat_id'] ?>">-</div>
+                                            </div>
+                                        </div>
+                                        <?php endforeach; ?>
+                                                        
+                                     </div>
+                                <?php endif; ?>
+                                <!--<?php if(!empty($seat_type)) { 
+                                    for($i=0; $i<count($seat_type); $i++) { ?>
+                                        <div class="j-span3 j-unit">
+                                            <div class="j-input">
+                                                <input type="text" id="first_name" name="seat_type[]" placeholder="Seat Type" value="<?php if(!empty($seat_type)) { echo @$seat_type[$i]->seat_type;} ?>">
+                                                <span class="j-tooltip j-tooltip-right-top">Seat Type</span>
+                                            </div>
+                                        </div>
+                                        <div class="j-span3 j-unit">
+                                            <div class="j-input">
+                                                <input type="text" id="first_name" name="seat_rate[]" placeholder="Rate" value="<?php if(!empty($seat_type)) { echo @$seat_type[$i]->seat_rate;} ?>">
+                                                <span class="j-tooltip j-tooltip-right-top">Rate</span>
+                                            </div>
+                                        </div>
+                                        <div class="j-span3 j-unit">
+                                            <div class="j-input">
+                                                <input type="text" id="first_name" name="no_seat[]" placeholder="No Of Seat " value="<?php if(!empty($seat_type)) { echo @$seat_type[$i]->seat_total;} ?>">
+                                                <span class="j-tooltip j-tooltip-right-top">No Of Seat</span>
+                                            </div>
+                                        </div>
+                                    <?php } } ?> -->
+                                        <!-- <div class="col-md-2">
+                                            <div class="form-group">
+                                                <a href="javascript:void(0);" class="add_button" title="Add field" style="margin-top: 26px;float: left;">Add More Seats</a>
+                                            </div>
+                                        </div> --> 
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="j-span6 j-unit">
+                     <!--<div class="j-input j-append-small-btn">
                                                                                 <div class="j-file-button">
                                                                                     Browse
                                                                                     <input type="file" name="featured_image" onchange="document.getElementById('file1_input').value = this.value;">
@@ -516,7 +448,16 @@
                                                                
                                                                 <!-- end /.content -->
                                                                 <div class="j-footer">
-                                                                    <button type="submit" class="btn btn-primary">Save</button>
+                                                                <?php
+                                                                if(!empty($single_event[0]))
+                                                                 {
+                                                                    echo '<button type="submit" class="btn btn-primary">Update</button>';
+                                                                 }
+                                                                 else
+                                                                 {
+                                                                    echo '<button type="submit" class="btn btn-primary">Save</button>';
+                                                                 }
+                                                                 ?>
                                                                     <button type="reset" class="btn btn-default m-r-20">Cancel</button>
                                                                 </div>
                                                                 <!-- end /.footer -->
@@ -838,13 +779,12 @@ $('.dlt_img').click(function() {
 
     $(document).ready(function(){
         $('.add_button').click(function() {
-            //alert("hai");
             var maxField = 10;
             var x = 1;
 
             $.ajax({
                type: "POST",
-               url: "add_branch",
+               url: "/success/admin/home/add_branch",
                success: function(html) 
                {
                    var response=JSON.parse(html);  
@@ -883,6 +823,32 @@ $('.dlt_img').click(function() {
         }
    });
 });
+    // $(".btn-rounded").on('click', fumction(e) {
+    //     alert('delete');
+    //     if(confirm('Are you sure want to delete these seat')) {
+    //         alert('deleted');
+    //     }
+    // })
+    $('body').on('click', '.btn-rounded', function(e) {
+        _this = $(this);
+        if(confirm('Are You sure want to delete this seat')) {
+            //$(this).closest('.temp').remove();
+            $.ajax({
+                url: '/success/admin/home/deleteSeat',
+                method: 'POST',
+                data: {id: $(this).data('id')},
+                success: function(response) {
+                    console.log(response);
+                    if(response==1) {
+                       _this.closest('.temp').remove();
+                    }
+                },
+                error: function(response) {
+                    console.log(response);
+                }
+            })
+        }
+    })
 </script> 
 <script>
 $(function() {
