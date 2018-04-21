@@ -100,6 +100,7 @@
                    $course_id = $this->course_model->insert_course($data);
                     $this->session->set_flashdata('message', 'Course inserted Successfully');
                     redirect('admin/home/course');
+                    
                 } else {
                     $error = array('error' => $this->upload->display_errors());
                     $this->load->view('admin/add-course', $error);
