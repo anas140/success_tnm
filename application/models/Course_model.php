@@ -62,6 +62,15 @@ class Course_model extends CI_Model {
         $this->db->delete('tbl_category');
     }
 
+    function get_all_language() {
+        $this ->db-> select('language_id,language_name,language_delete_status');
+        $this ->db-> from('tbl_languages');
+        $this->db->where('language_delete_status','0');
+        $this->db->order_by('language_name', 'asc');
+        $query = $this->db->get();
+        return $query->result();
+    }
+
     function single_category_id($data)
     {
         $this->db->select('*');
@@ -97,13 +106,21 @@ class Course_model extends CI_Model {
         //echo $this->db->last_query();
     }
 
-    function display_course()
-    {
-        $this -> db -> select('*');
-        $this -> db -> from('tbl_course');
-        $this->db->order_by('course_id', 'desc');
-        $query = $this->db->get();
-        return $query->result() ;
+    function display_course() {
+        $query = $this->db->query("select tbl_course.course_id, 
+        tbl_course.course_name,tbl_course.course_image,tbl_course.course_rate,tbl_course.course_renewal_rate,tbl_course.course_delete_status,tbl_course.course_status,
+        group_concat(
+        tbl_languages.language_name
+        order by locate(concat(',', tbl_languages.language_id, ','), 
+        concat(',', tbl_course.course_language, ',')
+        )
+        separator ','
+        ) as language_name
+        from tbl_course
+        join tbl_languages
+        on concat(',', tbl_course.course_language, ',') like concat('%,', tbl_languages.language_id, ',%')
+        group by tbl_course.course_id, tbl_course.course_language");
+        return $query->result();
     }
 
     function get_all_course()
