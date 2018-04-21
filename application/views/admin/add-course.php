@@ -4,6 +4,7 @@
 <head>
     <title>Success Valley</title>
     <?php require_once('includes/common-css.php');?>
+    <script src="https://cdn.ckeditor.com/4.9.2/basic/ckeditor.js"></script>
 </head>
 
 <body>
@@ -234,13 +235,49 @@
             <?php if(!empty($single_course[0])): ?>
                 <button type="submit" class="btn btn-primary">Update</button>
             <?php else: ?>
-                <button type="submit" class="btn btn-primary">Save</button>
+                <button type="submit" class="btn btn-primary">Next</button>
             <?php endif; ?>
             <button type="reset" class="btn btn-default m-r-20">cancel</button>
         </div>
         <!-- end /.footer -->
 
     </form>
+    <br/>
+    <hr>
+    <!--<?php if(empty($single_course[0])): ?>
+            <ul class="nav nav-tabs">
+                <li class="nav-item">
+                    <a class="nav-link active" href="#why-this-program">Why This Program</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">What You will  learn</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Course Information</a>
+                </li>       
+            </ul>                
+    <?php endif; ?> 
+
+    <div class="tab-content">
+        <div class="tab-pan active container" id="why-this-program">
+            <form action="<?= base_url('admin/home/addCourse') ?>" method="post" enctype="multipart/form-data">
+                <h3>Sections</h3>
+                <div class="row">
+                    <div class="col-md-10">
+                        <textarea name="why_this[]" id="" cols="30" rows="10" id="editorSection"></textarea>
+                        <input type="file" name="image[]" id="">
+                    </div>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-md-10">
+                        <button class="btn btn-primary btn-block ">Add More Section</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div> -->
+	
 </div>
 </div>
 </div>
@@ -428,6 +465,8 @@ setTimeout(function() {
     $(".alert-success").hide('blind', {}, 1000)
 }, 1000);
 });
+
+    CKEDITOR.replace('why_this[]');
 </script>
 </body>
 
